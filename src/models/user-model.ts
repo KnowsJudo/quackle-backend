@@ -1,21 +1,13 @@
-import mongoose from 'mongoose';
-import { IUser } from '../types/schema';
+import mongoose, { Schema } from 'mongoose';
+import { IUser, IUserModel, IUserDoc } from '../types/user-schema';
 
-interface IUserModel extends mongoose.Model<IUserDoc> {
-  build(item: IUser): IUserDoc;
-}
-
-interface IUserDoc extends mongoose.Document {
-  displayPic: String;
-  name: String;
-  userName: String;
-  createdAt: Date;
-}
-
-const userSchema = new mongoose.Schema({
+const userSchema: Schema<IUserDoc> = new mongoose.Schema({
   displayPic: { type: String },
   name: { type: String, required: true },
-  userName: { type: String, required: true, unique: true },
+  username: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+  dateOfBirth: { type: Date },
   createdAt: { type: Date },
 });
 
@@ -24,5 +16,12 @@ userSchema.statics.build = (user: IUser) => {
 };
 
 const User = mongoose.model<any, IUserModel>('User', userSchema);
+
+export const findOneUser = async (username: String) => {
+  const matchedUser = await User.findOne({
+    username: username,
+  });
+  return matchedUser;
+};
 
 export { User };

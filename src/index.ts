@@ -2,7 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import helmet from 'helmet';
 import { json } from 'body-parser';
-import { tweetRouter } from './routes/tweets';
+import { quackRouter } from './routes/quacks';
 import { userRouter } from './routes/user';
 import { createLog } from './middleware/log';
 
@@ -12,9 +12,10 @@ const app = express();
 //MIDDLEWARE
 app.use(json());
 app.use(createLog);
+//Adds security headers
 app.use(helmet());
 
-app.use(tweetRouter);
+app.use(quackRouter);
 app.use(userRouter);
 
 mongoose.connect(
