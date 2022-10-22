@@ -4,6 +4,7 @@ import { IUserDoc } from './user-schema';
 export interface IQuack {
   username: String;
   message: String;
+  quackedAt: Date;
 }
 
 export interface IQuackModel extends mongoose.Model<IQuackDoc> {
@@ -13,4 +14,5 @@ export interface IQuackModel extends mongoose.Model<IQuackDoc> {
 export interface IQuackDoc extends mongoose.Document {
   username: String;
   message: String;
+  quackedAt: Date;
 }

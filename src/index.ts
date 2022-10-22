@@ -9,6 +9,12 @@ import { createLog } from './middleware/log';
 const port = 3001;
 const app = express();
 
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', '*');
+  next();
+});
+
 //MIDDLEWARE
 app.use(json());
 app.use(createLog);
@@ -19,7 +25,7 @@ app.use(quackRouter);
 app.use(userRouter);
 
 mongoose.connect(
-  'mongodb://localhost:27017/todo',
+  'mongodb://localhost:27017/quackle',
   // {
   //   useCreateIndex: true,
   //   useNewUrlParser: true,

@@ -4,8 +4,8 @@ import { findOneUser, User } from '../models/user-model';
 const router = express.Router();
 
 // Search db for first all users, then specific user by username
-router.get('/api/user/:id?', async (req: Request, res: Response) => {
-  if (!req.params.id) {
+router.get('/api/user/:username?', async (req: Request, res: Response) => {
+  if (!req.params.username) {
     await User.find()
       .limit(20)
       .then((users) => {
@@ -21,7 +21,7 @@ router.get('/api/user/:id?', async (req: Request, res: Response) => {
       );
   } else {
     // Filter to find only parameters
-    const user = await findOneUser(req.params.id);
+    const user = await findOneUser(req.params.username);
     if (!user) {
       return res.status(404).send({
         error: 'User does not exist',
@@ -42,13 +42,19 @@ router.post('/api/user', async (req: Request, res: Response) => {
     dateOfBirth: new Date(),
     createdAt: new Date(),
   });
-  await user.save();
-
-  return res.status(201).send(user);
+  try {
+    await user.save();
+    return res.status(201).send(user);
+  } catch (error) {
+    return res.status(404).send({
+      message: 'User already exists',
+      error: error,
+    });
+  }
 });
 
-router.delete('/api/user/:id', async (req: Request, res: Response) => {
-  const user = await findOneUser(req.body.username);
+router.delete('/api/user/:username', async (req: Request, res: Response) => {
+  const user = await findOneUser(req.params.username);
   if (user) {
     user
       .deleteOne()
