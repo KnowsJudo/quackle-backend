@@ -8,7 +8,7 @@ export interface IUser {
   email: String;
   dateOfBirth: Date;
   createdAt: Date;
-  // accountInfo: {
+  // accountData: {
   //   quacks: Number;
   //   reQuacks: Number;
   //   usersFriend: IUser[];
