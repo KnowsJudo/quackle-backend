@@ -2,8 +2,13 @@ import express, { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import { findOneUser, User } from '../models/user-model';
 import { IUser } from '../types/user-schema';
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
 
+dotenv.config();
 const router = express.Router();
+
+const jwtSecret = process.env.JWT_SECRET_KEY;
 
 // Search db for first all users, then specific user by username
 router.get('/api/user/:username?', async (req: Request, res: Response) => {
@@ -49,6 +54,8 @@ router.post('/api/user', async (req: Request, res: Response) => {
     email: req.body.email,
     dateOfBirth: new Date(),
     createdAt: new Date(),
+    quacks: 0,
+    reQuacks: 0,
   });
 
   await user
@@ -56,26 +63,34 @@ router.post('/api/user', async (req: Request, res: Response) => {
     .then((u) => res.status(201).send(u))
     .catch((e) => {
       return res.status(503).send({
-        message: 'Couldnt create user',
+        message: 'Invalid name or username',
         error: e,
       });
     });
 });
 
+//Login
 router.post('/api/user/login', async (req, res) => {
   const { username, password } = req.body;
+
+  console.log(req.headers);
 
   const user = await User.findOne({ username: username });
   if (user) {
     const match = await bcrypt.compare(password, user.password as string);
     if (match) {
+      const token = jwt.sign(req.body, jwtSecret as string, {
+        expiresIn: 3600,
+      });
       res.status(200).send({
+        success: true,
         message: 'Successfully logged in',
+        token,
       });
       return;
     }
   }
-  res.status(501).send({
+  res.status(401).send({
     message: 'Password incorrect',
   });
 });

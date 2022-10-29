@@ -9,6 +9,8 @@ const userSchema: Schema<IUserDoc> = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   dateOfBirth: { type: Date },
   createdAt: { type: Date },
+  quacks: { type: Number },
+  reQuacks: { type: Number },
 });
 
 userSchema.statics.build = (user: IUser) => {
