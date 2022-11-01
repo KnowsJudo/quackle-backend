@@ -8,6 +8,7 @@ export type IUser = {
   email: String;
   dateOfBirth: Date;
   createdAt: Date;
+  tagline: String;
   quacks: Number;
   reQuacks: Number;
   // friends: IUser[];
@@ -26,6 +27,7 @@ export interface IUserDoc extends mongoose.Document {
   email: String;
   dateOfBirth: Date;
   createdAt: Date;
+  tagline: String;
   quacks: Number;
   reQuacks: Number;
   // friends: IUser[];

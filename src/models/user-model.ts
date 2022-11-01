@@ -9,6 +9,7 @@ const userSchema: Schema<IUserDoc> = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   dateOfBirth: { type: Date },
   createdAt: { type: Date },
+  tagline: { type: String },
   quacks: { type: Number },
   reQuacks: { type: Number },
 });

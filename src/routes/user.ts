@@ -54,6 +54,7 @@ router.post('/api/user', async (req: Request, res: Response) => {
     email: req.body.email,
     dateOfBirth: new Date(),
     createdAt: new Date(),
+    tagline: '',
     quacks: 0,
     reQuacks: 0,
   });
