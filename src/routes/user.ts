@@ -1,7 +1,6 @@
 import express, { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import { findOneUser, User } from '../models/user-model';
-import { IUser } from '../types/user-schema';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 
@@ -63,8 +62,9 @@ router.post('/api/user', async (req: Request, res: Response) => {
     .save()
     .then((u) => res.status(201).send(u))
     .catch((e) => {
-      return res.status(503).send({
-        message: 'Invalid name or username',
+      return res.status(409).send({
+        success: false,
+        message: 'Username already exists',
         error: e,
       });
     });
@@ -90,9 +90,14 @@ router.post('/api/user/login', async (req, res) => {
       });
       return;
     }
+    return res.status(401).send({
+      success: false,
+      message: 'Password incorrect',
+    });
   }
-  res.status(401).send({
-    message: 'Password incorrect',
+  return res.status(404).send({
+    success: false,
+    message: 'User does not exist',
   });
 });
 
