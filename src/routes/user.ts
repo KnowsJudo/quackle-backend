@@ -33,6 +33,8 @@ router.get('/api/user/:username?', async (req: Request, res: Response) => {
         error: 'User does not exist',
       });
     }
+    // delete user.password;
+    // console.log('user', user);
     return res.send(user);
   }
 });

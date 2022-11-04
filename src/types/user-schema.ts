@@ -4,7 +4,7 @@ export type IUser = {
   displayPic: String;
   name: String;
   username: String;
-  password: String;
+  password?: String;
   email: String;
   dateOfBirth: Date;
   createdAt: Date;
@@ -23,7 +23,7 @@ export interface IUserDoc extends mongoose.Document {
   displayPic: String;
   name: String;
   username: String;
-  password: String;
+  password?: String;
   email: String;
   dateOfBirth: Date;
   createdAt: Date;

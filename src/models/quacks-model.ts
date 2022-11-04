@@ -17,7 +17,7 @@ const Quack = mongoose.model<any, IQuackModel>('Quack', quackSchema);
 // Helper functions
 export const newQuack = async (message: string) => {
   //TODO
-  const foundUser = await findOneUser('BKHZ');
+  const foundUser = await findOneUser('AragornKing');
   const quack = Quack.build({
     username: foundUser ? foundUser.username : 'User not found',
     message: message,
@@ -33,6 +33,6 @@ export const getQuacks = async () => {
 };
 
 export const getOneQuack = async (id: String) => {
-  const quacks = await Quack.findById(id);
-  return quacks;
+  const quack = await Quack.findById(id);
+  return quack;
 };
