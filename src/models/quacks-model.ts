@@ -1,6 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
 import { IQuack, IQuackDoc, IQuackModel } from '../types/quack-schema';
-import { findOneUser } from './user-model';
 
 const quackSchema: Schema<IQuackDoc> = new mongoose.Schema({
   username: { type: String, required: true },
@@ -15,11 +14,9 @@ quackSchema.statics.build = (item: IQuack) => {
 const Quack = mongoose.model<any, IQuackModel>('Quack', quackSchema);
 
 // Helper functions
-export const newQuack = async (message: string) => {
-  //TODO
-  const foundUser = await findOneUser('AragornKing');
+export const newQuack = async (message: string, username: string) => {
   const quack = Quack.build({
-    username: foundUser ? foundUser.username : 'User not found',
+    username: username,
     message: message,
     quackedAt: new Date(),
   });
@@ -27,8 +24,8 @@ export const newQuack = async (message: string) => {
   return quack;
 };
 
-export const getQuacks = async () => {
-  const quacks = await Quack.find({}).limit(20);
+export const getQuacks = async (username: string) => {
+  const quacks = await Quack.find({ username: username }).limit(20);
   return quacks;
 };
 
