@@ -58,6 +58,8 @@ router.post('/api/user', async (req: Request, res: Response) => {
     tagline: '',
     quacks: 0,
     reQuacks: 0,
+    friends: [],
+    usersBlocked: [],
   });
 
   await user
@@ -88,6 +90,19 @@ router.post('/api/user/login', async (req, res) => {
       res.status(200).send({
         success: true,
         message: 'Successfully logged in',
+        data: {
+          displayPic: user.displayPic,
+          name: user.name,
+          username: user.username,
+          email: user.email,
+          dateOfBirth: user.dateOfBirth,
+          createdAt: user.createdAt,
+          tagline: user.tagline,
+          quacks: user.quacks,
+          reQuacks: user.reQuacks,
+          friends: user.friends,
+          usersBlocked: user.usersBlocked,
+        },
         token,
       });
       return;

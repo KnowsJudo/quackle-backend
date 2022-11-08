@@ -12,6 +12,8 @@ const userSchema: Schema<IUserDoc> = new mongoose.Schema({
   tagline: { type: String },
   quacks: { type: Number },
   reQuacks: { type: Number },
+  friends: { type: [] },
+  usersBlocked: { type: [] },
 });
 
 userSchema.statics.build = (user: IUser) => {

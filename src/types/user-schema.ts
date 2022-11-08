@@ -11,8 +11,8 @@ export type IUser = {
   tagline: String;
   quacks: Number;
   reQuacks: Number;
-  // friends: IUser[];
-  // usersBlocked: IUser[];
+  friends: any[];
+  usersBlocked: any[];
 };
 
 export interface IUserModel extends mongoose.Model<IUserDoc> {
@@ -30,6 +30,6 @@ export interface IUserDoc extends mongoose.Document {
   tagline: String;
   quacks: Number;
   reQuacks: Number;
-  // friends: IUser[];
-  // usersBlocked: IUser[];
+  friends: any[];
+  usersBlocked: any[];
 }
