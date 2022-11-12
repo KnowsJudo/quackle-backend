@@ -24,17 +24,9 @@ app.use(helmet());
 app.use(quackRouter);
 app.use(userRouter);
 
-mongoose.connect(
-  'mongodb://localhost:27017/quackle',
-  // {
-  //   useCreateIndex: true,
-  //   useNewUrlParser: true,
-  //   useUnifiedTopology: true
-  // },
-  () => {
-    console.log('connected to the database');
-  },
-);
+mongoose.connect('mongodb://localhost:27017/quackle', () => {
+  console.log('connected to the database');
+});
 
 app.listen(port, () => {
   console.log(`server running on port ${port}`);
