@@ -2,6 +2,7 @@ import mongoose, { Schema } from 'mongoose';
 import { IQuack, IQuackDoc, IQuackModel } from '../types/quack-schema';
 
 const quackSchema: Schema<IQuackDoc> = new mongoose.Schema({
+  name: { type: String, required: true },
   username: { type: String, required: true },
   message: { type: String, required: true },
   quackedAt: { type: Date, required: true },
@@ -14,10 +15,19 @@ quackSchema.statics.build = (item: IQuack) => {
 const Quack = mongoose.model<any, IQuackModel>('Quack', quackSchema);
 
 // Helper functions
-export const newQuack = async (message: string, username: string) => {
+export const newQuack = async ({
+  name,
+  username,
+  message,
+}: {
+  name: string;
+  username: string;
+  message: string;
+}) => {
   const quack = Quack.build({
-    username: username,
-    message: message,
+    name,
+    username,
+    message,
     quackedAt: new Date(),
   });
   await quack.save();

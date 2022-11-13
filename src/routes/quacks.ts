@@ -35,11 +35,10 @@ router.get(
 router.post(
   '/api/user/:username/quacks',
   async (req: Request, res: Response) => {
-    await newQuack(req.body.message, req.params.username).then(
-      (quack: IQuack) => {
-        return res.status(201).send(quack);
-      },
-    );
+    const { name, username, message } = req.body;
+    await newQuack({ name, username, message }).then((quack: IQuack) => {
+      return res.status(201).send(quack);
+    });
   },
 );
 

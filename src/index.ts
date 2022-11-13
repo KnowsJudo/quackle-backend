@@ -24,9 +24,12 @@ app.use(helmet());
 app.use(quackRouter);
 app.use(userRouter);
 
-mongoose.connect('mongodb://localhost:27017/quackle', () => {
-  console.log('connected to the database');
-});
+try {
+  mongoose.connect('mongodb://localhost:27017/quackle');
+  console.log('connected to database');
+} catch (e) {
+  console.error('error connecting to database', e);
+}
 
 app.listen(port, () => {
   console.log(`server running on port ${port}`);
