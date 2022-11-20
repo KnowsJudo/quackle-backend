@@ -12,7 +12,8 @@ const userSchema: Schema<IUserDoc> = new mongoose.Schema({
   tagline: { type: String },
   quacks: { type: Number },
   reQuacks: { type: Number },
-  friends: { type: [] },
+  following: { type: [] },
+  followers: { type: [] },
   usersBlocked: { type: [] },
 });
 
@@ -24,7 +25,7 @@ const User = mongoose.model<any, IUserModel>('User', userSchema);
 
 export const findOneUser = async (username: String) => {
   const matchedUser = await User.findOne({
-    username: username,
+    username,
   });
   return matchedUser;
 };

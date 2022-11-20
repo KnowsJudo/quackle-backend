@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
-import bcrypt from 'bcrypt';
 import { findOneUser, User } from '../models/user-model';
+import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 
@@ -33,8 +33,6 @@ router.get('/api/user/:username?', async (req: Request, res: Response) => {
         error: 'User does not exist',
       });
     }
-    // delete user.password;
-    // console.log('user', user);
     return res.send(user);
   }
 });
@@ -58,7 +56,8 @@ router.post('/api/user', async (req: Request, res: Response) => {
     tagline: '',
     quacks: 0,
     reQuacks: 0,
-    friends: [],
+    following: [],
+    followers: [],
     usersBlocked: [],
   });
 
@@ -100,7 +99,8 @@ router.post('/api/user/login', async (req, res) => {
           tagline: user.tagline,
           quacks: user.quacks,
           reQuacks: user.reQuacks,
-          friends: user.friends,
+          following: user.following,
+          followers: user.followers,
           usersBlocked: user.usersBlocked,
         },
         token,

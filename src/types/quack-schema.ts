@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import { IUserDoc } from './user-schema';
 
 export interface IQuack {
   name: String;

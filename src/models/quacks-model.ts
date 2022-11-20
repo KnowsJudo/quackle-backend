@@ -35,7 +35,7 @@ export const newQuack = async ({
 };
 
 export const getQuacks = async (username: string) => {
-  const quacks = await Quack.find({ username: username }).limit(20);
+  const quacks = await Quack.find({ username }).limit(20);
   return quacks;
 };
 

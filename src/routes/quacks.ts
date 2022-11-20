@@ -8,25 +8,18 @@ const router = express.Router();
 router.get(
   '/api/user/:username/quacks/:id?',
   async (req: Request, res: Response) => {
-    if (!req.params.id) {
-      await getQuacks(req.params.username)
-        .then((quack: IQuack[]) => {
-          return res.status(200).send(quack);
-        })
-        .catch((error) =>
-          res.send({
-            message: 'No quacks found',
-            error: error,
-          }),
-        );
-    } else {
-      const quack = await getOneQuack(req.params.id);
-      if (!quack) {
-        return res.status(404).send({
-          error: 'Quack does not exist',
-        });
+    try {
+      if (!req.params.id) {
+        const data = await getQuacks(req.params.username);
+        res.status(200).send(data);
+      } else {
+        const quack = await getOneQuack(req.params.id);
+        return res.send(quack);
       }
-      return res.send(quack);
+    } catch (error) {
+      res.status(404).send({
+        error: 'Quack does not exist',
+      });
     }
   },
 );
