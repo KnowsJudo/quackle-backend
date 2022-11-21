@@ -39,3 +39,12 @@ export interface IFollowersDoc extends mongoose.Document {
   tagline: String;
   followerSince: Date;
 }
+
+export interface IBlockedUser {
+  displayPic: String;
+  name: String;
+  username: String;
+  tagline: String;
+  blockedSince: Date;
+  reasonBlocked?: String;
+}

@@ -13,7 +13,7 @@ router.get(
         res.status(200).send(data);
       } else {
         const following = await getOneFollowing(req.params.id);
-        return res.send(following);
+        res.status(200).send(following);
       }
     } catch (error) {
       res.status(404).send({

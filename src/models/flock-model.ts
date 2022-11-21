@@ -16,9 +16,7 @@ const followingSchema: Schema<IFollowingDoc> = new mongoose.Schema({
   followingSince: { type: Date, required: true },
 });
 
-followingSchema.statics.build = (item: IFollowing) => {
-  return new Following(item);
-};
+followingSchema.statics.build = (item: IFollowing) => new Following(item);
 
 const Following = mongoose.model<any, IFollowingModel>(
   'Following',
@@ -48,15 +46,11 @@ export const newFollowing = async ({
   return following;
 };
 
-export const getFollowing = async (username: string) => {
-  const following = await Following.find({ username }).limit(20);
-  return following;
-};
+export const getFollowing = async (username: string) =>
+  await Following.find({ username }).limit(20);
 
-export const getOneFollowing = async (id: String) => {
-  const following = await Following.findById(id);
-  return following;
-};
+export const getOneFollowing = async (id: String) =>
+  await Following.findById(id);
 
 const followersSchema: Schema<IFollowersDoc> = new mongoose.Schema({
   displayPic: { type: String },
@@ -66,9 +60,7 @@ const followersSchema: Schema<IFollowersDoc> = new mongoose.Schema({
   followerSince: { type: Date, required: true },
 });
 
-followersSchema.statics.build = (item: IFollowers) => {
-  return new Follower(item);
-};
+followersSchema.statics.build = (item: IFollowers) => new Follower(item);
 
 const Follower = mongoose.model<any, IFollowersModel>(
   'Followers',

@@ -14,7 +14,7 @@ router.get(
         res.status(200).send(data);
       } else {
         const quack = await getOneQuack(req.params.id);
-        return res.send(quack);
+        res.send(quack);
       }
     } catch (error) {
       res.status(404).send({
@@ -48,7 +48,7 @@ router.delete(
             message: 'Quack successfully deleted',
           });
         })
-        .catch((error: any) => {
+        .catch((error: Error) => {
           return res.send({
             message: 'Failed to delete Quack',
             error: error,

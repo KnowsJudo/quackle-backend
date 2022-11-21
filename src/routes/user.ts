@@ -11,29 +11,24 @@ const jwtSecret = process.env.JWT_SECRET_KEY;
 
 // Search db for first all users, then specific user by username
 router.get('/api/user/:username?', async (req: Request, res: Response) => {
-  if (!req.params.username) {
-    await User.find()
-      .limit(20)
-      .then((users) => {
-        return res.send({
-          users: users,
+  try {
+    if (!req.params.username) {
+      const data = await User.find().limit(20);
+      res.status(200).send(data);
+    } else {
+      // Filter to find only parameters
+      const user = await findOneUser(req.params.username);
+      if (!user) {
+        return res.status(404).send({
+          error: 'User does not exist',
         });
-      })
-      .catch((error) =>
-        res.send({
-          message: 'No users found',
-          error: error,
-        }),
-      );
-  } else {
-    // Filter to find only parameters
-    const user = await findOneUser(req.params.username);
-    if (!user) {
-      return res.status(404).send({
-        error: 'User does not exist',
-      });
+      }
+      res.send(user);
     }
-    return res.send(user);
+  } catch (error) {
+    res.send({
+      error: 'No users found',
+    });
   }
 });
 
@@ -128,7 +123,7 @@ router.delete('/api/user/:username', async (req: Request, res: Response) => {
           message: 'User successfully deleted',
         });
       })
-      .catch((error: any) => {
+      .catch((error: Error) => {
         return res.send({
           message: 'Failed to delete user',
           error: error,

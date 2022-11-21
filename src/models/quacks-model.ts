@@ -8,9 +8,7 @@ const quackSchema: Schema<IQuackDoc> = new mongoose.Schema({
   quackedAt: { type: Date, required: true },
 });
 
-quackSchema.statics.build = (item: IQuack) => {
-  return new Quack(item);
-};
+quackSchema.statics.build = (item: IQuack) => new Quack(item);
 
 const Quack = mongoose.model<any, IQuackModel>('Quack', quackSchema);
 
@@ -34,12 +32,7 @@ export const newQuack = async ({
   return quack;
 };
 
-export const getQuacks = async (username: string) => {
-  const quacks = await Quack.find({ username }).limit(20);
-  return quacks;
-};
+export const getQuacks = async (username: string) =>
+  await Quack.find({ username }).limit(20);
 
-export const getOneQuack = async (id: String) => {
-  const quack = await Quack.findById(id);
-  return quack;
-};
+export const getOneQuack = async (id: String) => await Quack.findById(id);
