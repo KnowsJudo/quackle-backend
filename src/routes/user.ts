@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express';
-import { findOneUser, User } from '../models/user-model';
+import { User } from '../models/user-model';
+import { findOneUser, getUsers, newUser } from '../helpers/user-helpers';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
@@ -9,71 +10,55 @@ const router = express.Router();
 
 const jwtSecret = process.env.JWT_SECRET_KEY;
 
-// Search db for first all users, then specific user by username
-router.get('/api/user/:username?', async (req: Request, res: Response) => {
+//List users
+router.get('/api/user/:id?', async (req: Request, res: Response) => {
   try {
-    if (!req.params.username) {
-      const data = await User.find().limit(20);
+    if (!req.params.id) {
+      const data = await getUsers(20);
       res.status(200).send(data);
     } else {
       // Filter to find only parameters
-      const user = await findOneUser(req.params.username);
+      const user = await findOneUser(req.params.id);
       if (!user) {
         return res.status(404).send({
-          error: 'User does not exist',
+          message: 'User does not exist',
         });
       }
-      res.send(user);
+      res.status(200).send(user);
     }
   } catch (error) {
-    res.send({
-      error: 'No users found',
+    res.status(404).send({
+      message: 'No Users found',
+      error,
     });
   }
 });
 
-// Add user to db
+// Add a user to the database
 router.post('/api/user', async (req: Request, res: Response) => {
-  let hashedPassword = '';
+  const { name, username, email } = req.body;
+  const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
-  await bcrypt.hash(req.body.password, 10).then((hash) => {
-    hashedPassword = hash;
-  });
-
-  const user = User.build({
-    displayPic: '',
-    name: req.body.name,
-    username: req.body.username,
-    password: hashedPassword,
-    email: req.body.email,
-    dateOfBirth: new Date(),
-    createdAt: new Date(),
-    tagline: '',
-    quacks: 0,
-    reQuacks: 0,
-    following: [],
-    followers: [],
-    usersBlocked: [],
-  });
-
-  await user
-    .save()
-    .then((u) => res.status(201).send(u))
-    .catch((e) => {
-      return res.status(409).send({
-        success: false,
-        message: 'Username already exists',
-        error: e,
-      });
+  try {
+    const user = await newUser({
+      name,
+      username,
+      password: hashedPassword,
+      email,
     });
+    res.status(201).send({ success: true, user });
+  } catch (error) {
+    res.status(409).send({
+      success: false,
+      message: 'Username already exists',
+      error,
+    });
+  }
 });
 
 //Login
 router.post('/api/user/login', async (req, res) => {
   const { username, password } = req.body;
-
-  console.log(req.headers);
-
   const user = await User.findOne({ username: username });
   if (user) {
     const match = await bcrypt.compare(password, user.password as string);
@@ -113,25 +98,19 @@ router.post('/api/user/login', async (req, res) => {
   });
 });
 
-router.delete('/api/user/:username', async (req: Request, res: Response) => {
-  const user = await findOneUser(req.params.username);
-  if (user) {
-    user
-      .deleteOne()
-      .then(() => {
-        return res.send({
-          message: 'User successfully deleted',
-        });
-      })
-      .catch((error: Error) => {
-        return res.send({
-          message: 'Failed to delete user',
-          error: error,
-        });
-      });
-  } else {
-    return res.send({
+//Delete a user
+router.delete('/api/user/:id', async (req: Request, res: Response) => {
+  try {
+    await User.findOneAndRemove({ _id: req.params.id });
+    res.status(200).send({
+      success: true,
+      message: 'User successfully deleted',
+    });
+  } catch (error) {
+    res.status(404).send({
+      success: false,
       message: 'User not found',
+      error,
     });
   }
 });

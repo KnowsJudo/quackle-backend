@@ -21,13 +21,4 @@ userSchema.statics.build = (user: IUser) => {
   return new User(user);
 };
 
-const User = mongoose.model<any, IUserModel>('User', userSchema);
-
-export const findOneUser = async (username: String) => {
-  const matchedUser = await User.findOne({
-    username,
-  });
-  return matchedUser;
-};
-
-export { User };
+export const User = mongoose.model<any, IUserModel>('User', userSchema);

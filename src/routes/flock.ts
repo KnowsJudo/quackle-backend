@@ -1,9 +1,9 @@
 import express, { Request, Response } from 'express';
-import { getFollowing, getOneFollowing } from '../models/flock-model';
+import { getFollowing, getOneFollowing } from '../helpers/flock-helpers';
 
 const router = express.Router();
 
-//List Following Users
+//List following users
 router.get(
   '/api/user/:username/following/:id?',
   async (req: Request, res: Response) => {

@@ -1,10 +1,10 @@
 import express, { Request, Response } from 'express';
-import { getOneQuack, getQuacks, newQuack } from '../models/quacks-model';
-import { IQuack } from '../types/quack-schema';
+import { getOneQuack, getQuacks, newQuack } from '../helpers/quack-helpers';
+import { Quack } from '../models/quacks-model';
 
 const router = express.Router();
 
-//List Quacks
+//List quacks
 router.get(
   '/api/user/:username/quacks/:id?',
   async (req: Request, res: Response) => {
@@ -14,24 +14,32 @@ router.get(
         res.status(200).send(data);
       } else {
         const quack = await getOneQuack(req.params.id);
-        res.send(quack);
+        res.status(200).send(quack);
       }
     } catch (error) {
       res.status(404).send({
-        error: 'Quack does not exist',
+        message: 'Quack does not exist',
+        error,
       });
     }
   },
 );
 
-//Add new Quack
+//Add new quack
 router.post(
   '/api/user/:username/quacks',
   async (req: Request, res: Response) => {
     const { name, username, message } = req.body;
-    await newQuack({ name, username, message }).then((quack: IQuack) => {
-      return res.status(201).send(quack);
-    });
+    try {
+      const quack = await newQuack({ name, username, message });
+      res.status(201).send({ success: true, quack });
+    } catch (error) {
+      res.status(500).send({
+        success: false,
+        message: 'Quack could not be created',
+        error,
+      });
+    }
   },
 );
 
@@ -39,24 +47,17 @@ router.post(
 router.delete(
   '/api/user/:username/quacks/:id',
   async (req: Request, res: Response) => {
-    const quack = await getOneQuack(req.params.id);
-    if (quack) {
-      quack
-        .deleteOne()
-        .then(() => {
-          return res.send({
-            message: 'Quack successfully deleted',
-          });
-        })
-        .catch((error: Error) => {
-          return res.send({
-            message: 'Failed to delete Quack',
-            error: error,
-          });
-        });
-    } else {
-      return res.send({
+    try {
+      await Quack.findOneAndRemove({ _id: req.params.id });
+      res.status(200).send({
+        success: true,
+        message: 'Quack successfully deleted',
+      });
+    } catch (error) {
+      res.status(404).send({
+        success: false,
         message: 'Quack not found',
+        error,
       });
     }
   },
