@@ -1,4 +1,4 @@
-import mongoose, { Model, Schema } from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 import { IUser, IUserModel, IUserDoc } from '../types/user-schema';
 
 const userSchema: Schema<IUserDoc> = new mongoose.Schema({
@@ -10,7 +10,7 @@ const userSchema: Schema<IUserDoc> = new mongoose.Schema({
   dateOfBirth: { type: Date },
   createdAt: { type: Date },
   tagline: { type: String },
-  quacks: { type: Number },
+  quacks: [{ type: Schema.Types.ObjectId, ref: 'Quack' }],
   reQuacks: { type: Number },
   following: { type: [] },
   followers: { type: [] },

@@ -1,6 +1,11 @@
 import express, { Request, Response } from 'express';
 import { User } from '../models/user-model';
-import { findOneUser, getUsers, newUser } from '../helpers/user-helpers';
+import {
+  deleteUsersQuacks,
+  findOneUser,
+  getUsers,
+  newUser,
+} from '../helpers/user-helpers';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
@@ -11,14 +16,14 @@ const router = express.Router();
 const jwtSecret = process.env.JWT_SECRET_KEY;
 
 //List users
-router.get('/api/user/:id?', async (req: Request, res: Response) => {
+router.get('/api/user/:username?', async (req: Request, res: Response) => {
   try {
-    if (!req.params.id) {
+    if (!req.params.username) {
       const data = await getUsers(20);
       res.status(200).send(data);
     } else {
       // Filter to find only parameters
-      const user = await findOneUser(req.params.id);
+      const user = await findOneUser(req.params.username);
       if (!user) {
         return res.status(404).send({
           message: 'User does not exist',
@@ -70,6 +75,7 @@ router.post('/api/user/login', async (req, res) => {
         success: true,
         message: 'Successfully logged in',
         data: {
+          id: user._id,
           displayPic: user.displayPic,
           name: user.name,
           username: user.username,
@@ -101,6 +107,7 @@ router.post('/api/user/login', async (req, res) => {
 //Delete a user
 router.delete('/api/user/:id', async (req: Request, res: Response) => {
   try {
+    await deleteUsersQuacks(req.params.id);
     await User.findOneAndRemove({ _id: req.params.id });
     res.status(200).send({
       success: true,

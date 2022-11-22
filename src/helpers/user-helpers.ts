@@ -1,4 +1,6 @@
+import { Quack } from '../models/quacks-model';
 import { User } from '../models/user-model';
+import { getQuacks } from './quack-helpers';
 
 export const newUser = async ({
   name,
@@ -20,7 +22,7 @@ export const newUser = async ({
     dateOfBirth: new Date(),
     createdAt: new Date(),
     tagline: '',
-    quacks: 0,
+    quacks: [],
     reQuacks: 0,
     following: [],
     followers: [],
@@ -32,4 +34,8 @@ export const newUser = async ({
 
 export const getUsers = async (limit: number) => await User.find().limit(limit);
 
-export const findOneUser = async (id: String) => await User.findById(id);
+export const findOneUser = async (username: string) =>
+  await User.findOne({ username });
+
+export const deleteUsersQuacks = async (id: string) =>
+  await Quack.find({ user: id }).deleteMany({});

@@ -2,6 +2,7 @@ import mongoose, { Schema } from 'mongoose';
 import { IQuack, IQuackDoc, IQuackModel } from '../types/quack-schema';
 
 const quackSchema: Schema<IQuackDoc> = new mongoose.Schema({
+  user: { type: Schema.Types.ObjectId, ref: 'User' },
   name: { type: String, required: true },
   username: { type: String, required: true },
   message: { type: String, required: true },

@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 import { IBlockedUser, IFollowers, IFollowing } from './flock-schema';
 
 export type IUser = {
@@ -10,7 +10,7 @@ export type IUser = {
   dateOfBirth: Date;
   createdAt: Date;
   tagline: String;
-  quacks: Number;
+  quacks: Schema.Types.ObjectId[];
   reQuacks: Number;
   following: IFollowing[];
   followers: IFollowers[];
@@ -30,7 +30,7 @@ export interface IUserDoc extends mongoose.Document {
   dateOfBirth: Date;
   createdAt: Date;
   tagline: String;
-  quacks: Number;
+  quacks: Schema.Types.ObjectId[];
   reQuacks: Number;
   following: IFollowing[];
   followers: IFollowers[];

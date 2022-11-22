@@ -29,9 +29,9 @@ router.get(
 router.post(
   '/api/user/:username/quacks',
   async (req: Request, res: Response) => {
-    const { name, username, message } = req.body;
+    const { name, username, message, user } = req.body;
     try {
-      const quack = await newQuack({ name, username, message });
+      const quack = await newQuack({ name, username, message, user });
       res.status(201).send({ success: true, quack });
     } catch (error) {
       res.status(500).send({

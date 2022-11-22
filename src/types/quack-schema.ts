@@ -1,6 +1,7 @@
-import mongoose from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
 export interface IQuack {
+  user: Schema.Types.ObjectId;
   name: String;
   username: String;
   message: String;
@@ -12,6 +13,7 @@ export interface IQuackModel extends mongoose.Model<IQuackDoc> {
 }
 
 export interface IQuackDoc extends mongoose.Document {
+  user: Schema.Types.ObjectId;
   name: String;
   username: String;
   message: String;
