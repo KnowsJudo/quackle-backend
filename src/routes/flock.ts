@@ -16,8 +16,8 @@ router.get(
         res.status(200).send(following);
       }
     } catch (error) {
-      res.status(404).send({
-        message: 'User is not following anyone',
+      res.status(500).send({
+        message: 'Internal server error',
         error: error,
       });
     }
