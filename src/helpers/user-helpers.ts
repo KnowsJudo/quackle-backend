@@ -1,6 +1,5 @@
 import { Quack } from '../models/quacks-model';
 import { User } from '../models/user-model';
-import { getQuacks } from './quack-helpers';
 
 export const newUser = async ({
   name,

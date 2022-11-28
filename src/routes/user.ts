@@ -61,6 +61,24 @@ router.post('/api/user', async (req: Request, res: Response) => {
   }
 });
 
+//Edit a user's details
+router.patch('/api/user/:username', async (req: Request, res: Response) => {
+  try {
+    await User.findOneAndUpdate(req.body.username, {
+      tagline: req.body.tagline,
+    });
+    res.status(200).send({
+      success: true,
+      message: 'User successfully updated',
+    });
+  } catch (error) {
+    res.status(404).send({
+      message: 'Failed to update user data',
+      error,
+    });
+  }
+});
+
 //Login
 router.post('/api/user/login', async (req, res) => {
   const { username, password } = req.body;
