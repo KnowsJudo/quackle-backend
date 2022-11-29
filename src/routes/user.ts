@@ -29,7 +29,22 @@ router.get('/api/user/:username?', async (req: Request, res: Response) => {
           message: 'User does not exist',
         });
       }
-      res.status(200).send(user);
+      res.status(200).send({
+        id: user._id,
+        avatar: user.avatar,
+        name: user.name,
+        username: user.username,
+        email: user.email,
+        dateOfBirth: user.dateOfBirth,
+        createdAt: user.createdAt,
+        tagline: user.tagline,
+        banner: user.banner,
+        quacks: user.quacks,
+        reQuacks: user.reQuacks,
+        following: user.following,
+        followers: user.followers,
+        usersBlocked: user.usersBlocked,
+      });
     }
   } catch (error) {
     res.status(404).send({
@@ -94,13 +109,14 @@ router.post('/api/user/login', async (req, res) => {
         message: 'Successfully logged in',
         data: {
           id: user._id,
-          displayPic: user.displayPic,
+          avatar: user.avatar,
           name: user.name,
           username: user.username,
           email: user.email,
           dateOfBirth: user.dateOfBirth,
           createdAt: user.createdAt,
           tagline: user.tagline,
+          banner: user.banner,
           quacks: user.quacks,
           reQuacks: user.reQuacks,
           following: user.following,

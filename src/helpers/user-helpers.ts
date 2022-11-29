@@ -13,7 +13,7 @@ export const newUser = async ({
   password: string;
 }) => {
   const user = User.build({
-    displayPic: '',
+    avatar: '',
     name,
     username,
     password,
@@ -21,6 +21,7 @@ export const newUser = async ({
     dateOfBirth: new Date(),
     createdAt: new Date(),
     tagline: '',
+    banner: '',
     quacks: [],
     reQuacks: 0,
     following: [],

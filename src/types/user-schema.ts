@@ -2,7 +2,7 @@ import mongoose, { Schema } from 'mongoose';
 import { IBlockedUser, IFollowers, IFollowing } from './flock-schema';
 
 export type IUser = {
-  displayPic: String;
+  avatar: String;
   name: String;
   username: String;
   password?: String;
@@ -10,6 +10,7 @@ export type IUser = {
   dateOfBirth: Date;
   createdAt: Date;
   tagline: String;
+  banner: String;
   quacks: Schema.Types.ObjectId[];
   reQuacks: Number;
   following: IFollowing[];
@@ -22,7 +23,7 @@ export interface IUserModel extends mongoose.Model<IUserDoc> {
 }
 
 export interface IUserDoc extends mongoose.Document {
-  displayPic: String;
+  avatar: String;
   name: String;
   username: String;
   password?: String;
@@ -30,6 +31,7 @@ export interface IUserDoc extends mongoose.Document {
   dateOfBirth: Date;
   createdAt: Date;
   tagline: String;
+  banner: String;
   quacks: Schema.Types.ObjectId[];
   reQuacks: Number;
   following: IFollowing[];

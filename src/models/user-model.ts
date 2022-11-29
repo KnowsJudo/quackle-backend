@@ -2,7 +2,7 @@ import mongoose, { Schema } from 'mongoose';
 import { IUser, IUserModel, IUserDoc } from '../types/user-schema';
 
 const userSchema: Schema<IUserDoc> = new mongoose.Schema({
-  displayPic: { type: String },
+  avatar: { type: String },
   name: { type: String, required: true },
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
@@ -10,6 +10,7 @@ const userSchema: Schema<IUserDoc> = new mongoose.Schema({
   dateOfBirth: { type: Date },
   createdAt: { type: Date },
   tagline: { type: String },
+  banner: { type: String },
   quacks: [{ type: Schema.Types.ObjectId, ref: 'Quack' }],
   reQuacks: { type: Number },
   following: { type: [] },

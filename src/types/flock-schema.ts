@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 export interface IFollowing {
-  displayPic: String;
+  avatar: String;
   name: String;
   username: String;
   tagline: String;
@@ -13,7 +13,7 @@ export interface IFollowingModel extends mongoose.Model<IFollowingDoc> {
 }
 
 export interface IFollowingDoc extends mongoose.Document {
-  displayPic: String;
+  avatar: String;
   name: String;
   username: String;
   tagline: String;
@@ -21,7 +21,7 @@ export interface IFollowingDoc extends mongoose.Document {
 }
 
 export interface IFollowers {
-  displayPic: String;
+  avatar: String;
   name: String;
   username: String;
   tagline: String;
@@ -33,7 +33,7 @@ export interface IFollowersModel extends mongoose.Model<IFollowersDoc> {
 }
 
 export interface IFollowersDoc extends mongoose.Document {
-  displayPic: String;
+  avatar: String;
   name: String;
   username: String;
   tagline: String;
@@ -41,7 +41,7 @@ export interface IFollowersDoc extends mongoose.Document {
 }
 
 export interface IBlockedUser {
-  displayPic: String;
+  avatar: String;
   name: String;
   username: String;
   tagline: String;

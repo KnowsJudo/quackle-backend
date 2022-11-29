@@ -9,7 +9,7 @@ import {
 } from '../types/flock-schema';
 
 const followingSchema: Schema<IFollowingDoc> = new mongoose.Schema({
-  displayPic: { type: String },
+  avatar: { type: String },
   name: { type: String, required: true },
   username: { type: String, required: true },
   tagline: { type: String },
@@ -24,7 +24,7 @@ export const Following = mongoose.model<any, IFollowingModel>(
 );
 
 const followersSchema: Schema<IFollowersDoc> = new mongoose.Schema({
-  displayPic: { type: String },
+  avatar: { type: String },
   name: { type: String, required: true },
   username: { type: String, required: true },
   tagline: { type: String },

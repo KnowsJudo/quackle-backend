@@ -1,18 +1,18 @@
 import { Follower, Following } from '../models/flock-model';
 
 export const newFollowing = async ({
-  displayPic,
+  avatar,
   name,
   username,
   tagline,
 }: {
-  displayPic: string;
+  avatar: string;
   name: string;
   username: string;
   tagline: string;
 }) => {
   const following = Following.build({
-    displayPic,
+    avatar,
     name,
     username,
     tagline,
@@ -29,18 +29,18 @@ export const getOneFollowing = async (id: String) =>
   await Following.findById(id);
 
 export const newFollower = async ({
-  displayPic,
+  avatar,
   name,
   username,
   tagline,
 }: {
-  displayPic: string;
+  avatar: string;
   name: string;
   username: string;
   tagline: string;
 }) => {
   const follower = Follower.build({
-    displayPic,
+    avatar,
     name,
     username,
     tagline,
