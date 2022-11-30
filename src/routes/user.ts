@@ -79,9 +79,12 @@ router.post('/api/user', async (req: Request, res: Response) => {
 //Edit a user's details
 router.patch('/api/user/:username', async (req: Request, res: Response) => {
   try {
-    await User.findOneAndUpdate(req.body.username, {
-      tagline: req.body.tagline,
-    });
+    await User.findOneAndUpdate(
+      { username: req.params.username },
+      {
+        tagline: req.body.tagline,
+      },
+    );
     res.status(200).send({
       success: true,
       message: 'User successfully updated',
