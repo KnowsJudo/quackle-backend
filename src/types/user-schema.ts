@@ -11,6 +11,7 @@ export type IUser = {
   createdAt: Date;
   tagline: String;
   banner: String;
+  location: String;
   quacks: Schema.Types.ObjectId[];
   reQuacks: Number;
   following: IFollowing[];
@@ -32,6 +33,7 @@ export interface IUserDoc extends mongoose.Document {
   createdAt: Date;
   tagline: String;
   banner: String;
+  location: String;
   quacks: Schema.Types.ObjectId[];
   reQuacks: Number;
   following: IFollowing[];

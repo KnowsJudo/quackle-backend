@@ -11,6 +11,7 @@ const userSchema: Schema<IUserDoc> = new mongoose.Schema({
   createdAt: { type: Date },
   tagline: { type: String },
   banner: { type: String },
+  location: { type: String },
   quacks: [{ type: Schema.Types.ObjectId, ref: 'Quack' }],
   reQuacks: { type: Number },
   following: { type: [] },

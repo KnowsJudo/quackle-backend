@@ -39,6 +39,7 @@ router.get('/api/user/:username?', async (req: Request, res: Response) => {
         createdAt: user.createdAt,
         tagline: user.tagline,
         banner: user.banner,
+        location: user.location,
         quacks: user.quacks,
         reQuacks: user.reQuacks,
         following: user.following,
@@ -82,7 +83,7 @@ router.patch('/api/user/:username', async (req: Request, res: Response) => {
     await User.findOneAndUpdate(
       { username: req.params.username },
       {
-        tagline: req.body.tagline,
+        [req.body.option]: req.body.setting,
       },
     );
     res.status(200).send({
@@ -120,6 +121,7 @@ router.post('/api/user/login', async (req, res) => {
           createdAt: user.createdAt,
           tagline: user.tagline,
           banner: user.banner,
+          location: user.location,
           quacks: user.quacks,
           reQuacks: user.reQuacks,
           following: user.following,
