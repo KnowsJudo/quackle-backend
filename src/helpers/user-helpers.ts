@@ -1,5 +1,6 @@
 import { Quack } from '../models/quacks-model';
 import { User } from '../models/user-model';
+import { Image } from '../models/image-model';
 
 export const newUser = async ({
   name,
@@ -13,7 +14,7 @@ export const newUser = async ({
   password: string;
 }) => {
   const user = User.build({
-    avatar: '',
+    avatar: new Image(),
     name,
     username,
     password,
@@ -36,7 +37,7 @@ export const newUser = async ({
 export const getUsers = async (limit: number) => await User.find().limit(limit);
 
 export const findOneUser = async (username: string) =>
-  await User.findOne({ username });
+  await User.findOne({ username }).populate('avatar');
 
 export const deleteUsersQuacks = async (id: string) =>
   await Quack.find({ user: id }).deleteMany({});

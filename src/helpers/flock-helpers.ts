@@ -6,7 +6,7 @@ export const newFollowing = async ({
   username,
   tagline,
 }: {
-  avatar: string;
+  avatar: Buffer;
   name: string;
   username: string;
   tagline: string;
@@ -34,7 +34,7 @@ export const newFollower = async ({
   username,
   tagline,
 }: {
-  avatar: string;
+  avatar: Buffer;
   name: string;
   username: string;
   tagline: string;

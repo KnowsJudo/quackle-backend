@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express';
 import { User } from '../models/user-model';
+import { Image } from '../models/image-model';
 import {
   deleteUsersQuacks,
   findOneUser,
@@ -9,11 +10,24 @@ import {
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import multer from 'multer';
+import fs from 'fs';
 
 dotenv.config();
 const router = express.Router();
 
 const jwtSecret = process.env.JWT_SECRET_KEY;
+
+const storage = multer.diskStorage({
+  destination: (req, files, dest) => {
+    dest(null, './uploads/');
+  },
+  filename: (req, file, dest) => {
+    dest(null, file.originalname);
+  },
+});
+
+const upload = multer({ storage: storage });
 
 //List users
 router.get('/api/user/:username?', async (req: Request, res: Response) => {
@@ -78,25 +92,49 @@ router.post('/api/user', async (req: Request, res: Response) => {
 });
 
 //Edit a user's details
-router.patch('/api/user/:username', async (req: Request, res: Response) => {
-  try {
-    await User.findOneAndUpdate(
-      { username: req.params.username },
-      {
-        [req.body.option]: req.body.setting,
-      },
-    );
-    res.status(200).send({
-      success: true,
-      message: 'User successfully updated',
-    });
-  } catch (error) {
-    res.status(404).send({
-      message: 'Failed to update user data',
-      error,
-    });
-  }
-});
+router.patch(
+  '/api/user/:username',
+  upload.single('avatar'),
+  async (req: Request, res: Response) => {
+    try {
+      if (req.body.option === 'avatar' || req.body.option === 'banner') {
+        const filename = req.file?.originalname;
+        const image = new Image({
+          name: filename,
+          data: fs.readFileSync(`./uploads/${filename}`),
+          contentType: 'image/png',
+        });
+        image.save();
+        await User.findOneAndUpdate(
+          { username: req.params.username },
+          {
+            avatar: image,
+          },
+        );
+        res.status(200).send({
+          success: true,
+          message: 'User successfully updated',
+        });
+      } else {
+        await User.findOneAndUpdate(
+          { username: req.params.username },
+          {
+            [req.body.option]: req.body.setting,
+          },
+        );
+        res.status(200).send({
+          success: true,
+          message: 'User successfully updated',
+        });
+      }
+    } catch (error) {
+      res.status(404).send({
+        message: 'Failed to update user data',
+        error,
+      });
+    }
+  },
+);
 
 //Login
 router.post('/api/user/login', async (req, res) => {

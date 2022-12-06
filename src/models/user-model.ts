@@ -2,7 +2,7 @@ import mongoose, { Schema } from 'mongoose';
 import { IUser, IUserModel, IUserDoc } from '../types/user-schema';
 
 const userSchema: Schema<IUserDoc> = new mongoose.Schema({
-  avatar: { type: String },
+  avatar: { type: Schema.Types.ObjectId, ref: 'Image' },
   name: { type: String, required: true },
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
@@ -19,8 +19,6 @@ const userSchema: Schema<IUserDoc> = new mongoose.Schema({
   usersBlocked: { type: [] },
 });
 
-userSchema.statics.build = (user: IUser) => {
-  return new User(user);
-};
+userSchema.statics.build = (user: IUser) => new User(user);
 
 export const User = mongoose.model<any, IUserModel>('User', userSchema);

@@ -1,8 +1,9 @@
 import mongoose, { Schema } from 'mongoose';
 import { IBlockedUser, IFollowers, IFollowing } from './flock-schema';
+import { IImage } from './image-schema';
 
 export type IUser = {
-  avatar: String;
+  avatar: IImage;
   name: String;
   username: String;
   password?: String;
@@ -24,7 +25,7 @@ export interface IUserModel extends mongoose.Model<IUserDoc> {
 }
 
 export interface IUserDoc extends mongoose.Document {
-  avatar: String;
+  avatar: IImage;
   name: String;
   username: String;
   password?: String;

@@ -27,4 +27,4 @@ export const newQuack = async ({
 export const getQuacks = async (username: string) =>
   await Quack.find({ username }).limit(20);
 
-export const getOneQuack = async (id: String) => await Quack.findById(id);
+export const getOneQuack = async (id: String) => Quack.findById(id);
