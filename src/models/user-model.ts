@@ -10,7 +10,7 @@ const userSchema: Schema<IUserDoc> = new mongoose.Schema({
   dateOfBirth: { type: Date },
   createdAt: { type: Date },
   tagline: { type: String },
-  banner: { type: String },
+  banner: { type: Schema.Types.ObjectId, ref: 'Image' },
   location: { type: String },
   quacks: [{ type: Schema.Types.ObjectId, ref: 'Quack' }],
   reQuacks: { type: Number },

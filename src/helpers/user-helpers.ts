@@ -22,7 +22,7 @@ export const newUser = async ({
     dateOfBirth: new Date(),
     createdAt: new Date(),
     tagline: '',
-    banner: '',
+    banner: new Image(),
     location: '',
     quacks: [],
     reQuacks: 0,
@@ -37,7 +37,7 @@ export const newUser = async ({
 export const getUsers = async (limit: number) => await User.find().limit(limit);
 
 export const findOneUser = async (username: string) =>
-  await User.findOne({ username }).populate('avatar');
+  await User.findOne({ username }).populate('avatar').populate('banner');
 
 export const deleteUsersQuacks = async (id: string) =>
   await Quack.find({ user: id }).deleteMany({});

@@ -94,7 +94,7 @@ router.post('/api/user', async (req: Request, res: Response) => {
 //Edit a user's details
 router.patch(
   '/api/user/:username',
-  upload.single('avatar'),
+  upload.single('image'),
   async (req: Request, res: Response) => {
     try {
       if (req.body.option === 'avatar' || req.body.option === 'banner') {
@@ -102,15 +102,16 @@ router.patch(
         const image = new Image({
           name: filename,
           data: fs.readFileSync(`./uploads/${filename}`),
-          contentType: 'image/png',
+          contentType: req.file?.mimetype,
         });
         image.save();
         await User.findOneAndUpdate(
           { username: req.params.username },
           {
-            avatar: image,
+            [req.body.option]: image,
           },
         );
+        fs.unlink(`./uploads/${filename}`, (err) => console.log(err));
         res.status(200).send({
           success: true,
           message: 'User successfully updated',

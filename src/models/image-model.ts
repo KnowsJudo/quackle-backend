@@ -4,7 +4,16 @@ import { IImage, IImageDoc, IImageModel } from '../types/image-schema';
 export const imageSchema: Schema<IImageDoc> = new mongoose.Schema({
   name: { type: String },
   data: { type: Buffer },
-  contentType: { type: String },
+  contentType: {
+    type: String,
+    enum: [
+      'image/jpeg',
+      'image/png',
+      'image/svg+xml',
+      'image/gif',
+      'image/webp',
+    ],
+  },
 });
 
 imageSchema.statics.build = (image: IImage) => new Image(image);
