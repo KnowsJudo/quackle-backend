@@ -1,22 +1,24 @@
-import { Schema } from 'mongoose';
 import { Follower, Following } from '../models/flock-model';
 
 export const newFollowing = async ({
-  avatar,
-  name,
   username,
-  tagline,
+  followingName,
+  followingUsername,
+  followingAvatar,
+  followingTagline,
 }: {
-  avatar: Buffer;
-  name: string;
   username: string;
-  tagline: string;
+  followingName: string;
+  followingUsername: string;
+  followingAvatar?: Buffer;
+  followingTagline?: string;
 }) => {
   const following = Following.build({
-    avatar,
-    name,
     username,
-    tagline,
+    followingName,
+    followingUsername,
+    followingAvatar,
+    followingTagline,
     followingSince: new Date(),
   });
   await following.save();

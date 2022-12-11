@@ -1,10 +1,11 @@
 import mongoose, { Schema } from 'mongoose';
 
 export interface IFollowing {
-  avatar: Buffer;
-  name: String;
   username: String;
-  tagline: String;
+  followingName: String;
+  followingUsername: String;
+  followingAvatar?: Buffer;
+  followingTagline?: String;
   followingSince: Date;
 }
 
@@ -13,10 +14,11 @@ export interface IFollowingModel extends mongoose.Model<IFollowingDoc> {
 }
 
 export interface IFollowingDoc extends mongoose.Document {
-  avatar: Buffer;
-  name: String;
   username: String;
-  tagline: String;
+  followingName: String;
+  followingUsername: String;
+  followingAvatar?: Buffer;
+  followingTagline?: String;
   followingSince: Date;
 }
 

@@ -9,11 +9,22 @@ import {
 } from '../types/flock-schema';
 
 const followingSchema: Schema<IFollowingDoc> = new mongoose.Schema({
-  avatar: { type: Buffer },
-  name: { type: String, required: true },
-  username: { type: String, required: true, unique: true },
-  tagline: { type: String },
-  followingSince: { type: Date },
+  username: { type: String, required: true, unique: false },
+  followingName: { type: String, required: true },
+  followingUsername: { type: String, required: true, unique: true },
+  followingAvatar: {
+    type: Buffer,
+    required: false,
+    default: null,
+    sparse: true,
+  },
+  followingTagline: {
+    type: String,
+    required: false,
+    default: null,
+    sparse: true,
+  },
+  followingSince: { type: Date, required: true },
 });
 
 followingSchema.statics.build = (item: IFollowing) => new Following(item);

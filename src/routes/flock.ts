@@ -5,8 +5,9 @@ import {
   getOneFollower,
   getOneFollowing,
   newFollower,
+  newFollowing,
 } from '../helpers/flock-helpers';
-import { Follower } from '../models/flock-model';
+import { Follower, Following } from '../models/flock-model';
 
 const router = express.Router();
 
@@ -53,6 +54,37 @@ router.get(
   },
 );
 
+//Add a following user
+router.post(
+  '/api/user/:username/following',
+  async (req: Request, res: Response) => {
+    console.log(req.body);
+    const {
+      username,
+      followingName,
+      followingUsername,
+      followingAvatar,
+      followingTagline,
+    } = req.body;
+    try {
+      const following = await newFollowing({
+        username,
+        followingName,
+        followingUsername,
+        followingAvatar,
+        followingTagline,
+      });
+      console.log('result', following);
+      res.status(201).send({ success: true, following });
+    } catch (error) {
+      res.status(404).send({
+        message: 'Failed to update user following users',
+        error,
+      });
+    }
+  },
+);
+
 //Add a follower
 router.post(
   '/api/user/:username/followers',
@@ -84,13 +116,32 @@ router.post(
   },
 );
 
+//Delete a users following user
+router.delete(
+  '/api/user/:username/following/:id',
+  async (req: Request, res: Response) => {
+    try {
+      await Following.findOneAndRemove({ _id: req.params.id });
+      res.status(200).send({
+        success: true,
+        message: 'Removed following user',
+      });
+    } catch (error) {
+      res.status(404).send({
+        success: false,
+        message: 'Following user not found',
+        error,
+      });
+    }
+  },
+);
+
 //Delete a follower
 router.delete(
   '/api/user/:username/followers/:id',
   async (req: Request, res: Response) => {
     try {
       await Follower.findOneAndRemove({ _id: req.params.id });
-      // await Follower.remove()
       res.status(200).send({
         success: true,
         message: 'Removed follower',
