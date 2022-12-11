@@ -15,7 +15,7 @@ const userSchema: Schema<IUserDoc> = new mongoose.Schema({
   quacks: [{ type: Schema.Types.ObjectId, ref: 'Quack' }],
   reQuacks: { type: Number },
   following: { type: [] },
-  followers: { type: [] },
+  followers: [{ type: Schema.Types.ObjectId, ref: 'Followers' }],
   usersBlocked: { type: [] },
 });
 

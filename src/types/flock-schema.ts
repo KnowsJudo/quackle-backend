@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
 export interface IFollowing {
   avatar: Buffer;
@@ -21,10 +21,11 @@ export interface IFollowingDoc extends mongoose.Document {
 }
 
 export interface IFollowers {
-  avatar: Buffer;
-  name: String;
   username: String;
-  tagline: String;
+  followerName: String;
+  followerUsername: String;
+  followerAvatar?: Buffer;
+  followerTagline?: String;
   followerSince: Date;
 }
 
@@ -33,10 +34,11 @@ export interface IFollowersModel extends mongoose.Model<IFollowersDoc> {
 }
 
 export interface IFollowersDoc extends mongoose.Document {
-  avatar: Buffer;
-  name: String;
   username: String;
-  tagline: String;
+  followerName: String;
+  followerUsername: String;
+  followerAvatar?: Buffer;
+  followerTagline?: String;
   followerSince: Date;
 }
 

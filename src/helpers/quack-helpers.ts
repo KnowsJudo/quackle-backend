@@ -1,6 +1,5 @@
 import { Schema } from 'mongoose';
 import { Quack } from '../models/quacks-model';
-import { User } from '../models/user-model';
 
 export const newQuack = async ({
   user,

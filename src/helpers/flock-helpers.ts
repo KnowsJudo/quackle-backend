@@ -1,3 +1,4 @@
+import { Schema } from 'mongoose';
 import { Follower, Following } from '../models/flock-model';
 
 export const newFollowing = async ({
@@ -29,33 +30,31 @@ export const getOneFollowing = async (id: String) =>
   await Following.findById(id);
 
 export const newFollower = async ({
-  avatar,
-  name,
   username,
-  tagline,
+  followerName,
+  followerUsername,
+  followerAvatar,
+  followerTagline,
 }: {
-  avatar: Buffer;
-  name: string;
   username: string;
-  tagline: string;
+  followerName: string;
+  followerUsername: string;
+  followerAvatar?: Buffer;
+  followerTagline?: string;
 }) => {
   const follower = Follower.build({
-    avatar,
-    name,
     username,
-    tagline,
+    followerName,
+    followerUsername,
+    followerAvatar,
+    followerTagline,
     followerSince: new Date(),
   });
   await follower.save();
   return follower;
 };
 
-export const getFollowers = async (username: string) => {
-  const followers = await Follower.find({ username }).limit(20);
-  return followers;
-};
+export const getFollowers = async (username: string) =>
+  await Follower.find({ username }).limit(20);
 
-export const getOneFollower = async (id: String) => {
-  const followers = await Follower.findById(id);
-  return followers;
-};
+export const getOneFollower = async (id: String) => await Follower.findById(id);
