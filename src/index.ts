@@ -1,7 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import helmet from 'helmet';
-import { json } from 'body-parser';
+import bodyParser, { json } from 'body-parser';
 import { quackRouter } from './routes/quacks';
 import { userRouter } from './routes/user';
 import { createLog } from './middleware/log';
@@ -18,6 +18,8 @@ app.use((req, res, next) => {
 });
 
 //MIDDLEWARE
+app.use(bodyParser.json({ limit: '15mb' }));
+app.use(bodyParser.urlencoded({ limit: '15mb', extended: true }));
 app.use(json());
 app.use(createLog);
 //Adds security headers

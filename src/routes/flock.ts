@@ -39,7 +39,6 @@ router.get(
     try {
       if (!req.params.id) {
         const data = await getFollowers(req.params.username);
-        console.log(data, 'data');
         res.status(200).send(data);
       } else {
         const followers = await getOneFollower(req.params.id);
@@ -58,23 +57,8 @@ router.get(
 router.post(
   '/api/user/:username/following',
   async (req: Request, res: Response) => {
-    console.log(req.body);
-    const {
-      username,
-      followingName,
-      followingUsername,
-      followingAvatar,
-      followingTagline,
-    } = req.body;
     try {
-      const following = await newFollowing({
-        username,
-        followingName,
-        followingUsername,
-        followingAvatar,
-        followingTagline,
-      });
-      console.log('result', following);
+      const following = await newFollowing(req.body);
       res.status(201).send({ success: true, following });
     } catch (error) {
       res.status(404).send({
@@ -89,23 +73,8 @@ router.post(
 router.post(
   '/api/user/:username/followers',
   async (req: Request, res: Response) => {
-    console.log(req.body);
-    const {
-      username,
-      followerName,
-      followerUsername,
-      followerAvatar,
-      followerTagline,
-    } = req.body;
     try {
-      const follower = await newFollower({
-        username,
-        followerName,
-        followerUsername,
-        followerAvatar,
-        followerTagline,
-      });
-      console.log('result', follower);
+      const follower = await newFollower(req.body);
       res.status(201).send({ success: true, follower });
     } catch (error) {
       res.status(404).send({

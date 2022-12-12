@@ -11,7 +11,7 @@ import {
 const followingSchema: Schema<IFollowingDoc> = new mongoose.Schema({
   username: { type: String, required: true, unique: false },
   followingName: { type: String, required: true },
-  followingUsername: { type: String, required: true, unique: true },
+  followingUsername: { type: String, required: true },
   followingAvatar: {
     type: Buffer,
     required: false,
@@ -37,7 +37,7 @@ export const Following = mongoose.model<any, IFollowingModel>(
 const followersSchema: Schema<IFollowersDoc> = new mongoose.Schema({
   username: { type: String, required: true, unique: false },
   followerName: { type: String, required: true },
-  followerUsername: { type: String, required: true, unique: true },
+  followerUsername: { type: String, required: true },
   followerAvatar: {
     type: Buffer,
     required: false,

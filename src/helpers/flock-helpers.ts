@@ -1,12 +1,6 @@
 import { Follower, Following } from '../models/flock-model';
 
-export const newFollowing = async ({
-  username,
-  followingName,
-  followingUsername,
-  followingAvatar,
-  followingTagline,
-}: {
+export const newFollowing = async (props: {
   username: string;
   followingName: string;
   followingUsername: string;
@@ -14,11 +8,7 @@ export const newFollowing = async ({
   followingTagline?: string;
 }) => {
   const following = Following.build({
-    username,
-    followingName,
-    followingUsername,
-    followingAvatar,
-    followingTagline,
+    ...props,
     followingSince: new Date(),
   });
   await following.save();
@@ -31,13 +21,7 @@ export const getFollowing = async (username: string) =>
 export const getOneFollowing = async (id: String) =>
   await Following.findById(id);
 
-export const newFollower = async ({
-  username,
-  followerName,
-  followerUsername,
-  followerAvatar,
-  followerTagline,
-}: {
+export const newFollower = async (props: {
   username: string;
   followerName: string;
   followerUsername: string;
@@ -45,11 +29,7 @@ export const newFollower = async ({
   followerTagline?: string;
 }) => {
   const follower = Follower.build({
-    username,
-    followerName,
-    followerUsername,
-    followerAvatar,
-    followerTagline,
+    ...props,
     followerSince: new Date(),
   });
   await follower.save();
