@@ -12,11 +12,11 @@ const userSchema: Schema<IUserDoc> = new mongoose.Schema({
   tagline: { type: String },
   banner: { type: Schema.Types.ObjectId, ref: 'Image' },
   location: { type: String },
-  quacks: [{ type: Schema.Types.ObjectId, ref: 'Quack' }],
+  quacks: { type: Number },
   reQuacks: { type: Number },
-  following: { type: [] },
-  followers: [{ type: Schema.Types.ObjectId, ref: 'Followers' }],
-  usersBlocked: { type: [] },
+  following: [{ type: String }],
+  followers: [{ type: String }],
+  usersBlocked: [{ type: String }],
 });
 
 userSchema.statics.build = (user: IUser) => new User(user);

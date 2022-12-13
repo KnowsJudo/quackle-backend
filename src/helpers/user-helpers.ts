@@ -2,12 +2,7 @@ import { Quack } from '../models/quacks-model';
 import { User } from '../models/user-model';
 import { Image } from '../models/image-model';
 
-export const newUser = async ({
-  name,
-  username,
-  email,
-  password,
-}: {
+export const newUser = async (props: {
   name: string;
   username: string;
   email: string;
@@ -15,16 +10,13 @@ export const newUser = async ({
 }) => {
   const user = User.build({
     avatar: new Image(),
-    name,
-    username,
-    password,
-    email,
+    ...props,
     dateOfBirth: new Date(),
     createdAt: new Date(),
     tagline: '',
     banner: new Image(),
     location: '',
-    quacks: [],
+    quacks: 0,
     reQuacks: 0,
     following: [],
     followers: [],
@@ -40,4 +32,4 @@ export const findOneUser = async (username: string) =>
   await User.findOne({ username }).populate('avatar').populate('banner');
 
 export const deleteUsersQuacks = async (id: string) =>
-  await Quack.find({ user: id }).deleteMany({});
+  await Quack.deleteMany({ user: id });

@@ -1,22 +1,14 @@
 import { Schema } from 'mongoose';
 import { Quack } from '../models/quacks-model';
 
-export const newQuack = async ({
-  user,
-  name,
-  username,
-  message,
-}: {
+export const newQuack = async (props: {
   user: Schema.Types.ObjectId;
   name: string;
   username: string;
   message: string;
 }) => {
   const quack = Quack.build({
-    user,
-    name,
-    username,
-    message,
+    ...props,
     quackedAt: new Date(),
   });
   await quack.save();

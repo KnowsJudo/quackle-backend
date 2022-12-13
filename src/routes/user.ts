@@ -185,7 +185,7 @@ router.post('/api/user/login', async (req, res) => {
 //Delete a user
 router.delete('/api/user/:id', async (req: Request, res: Response) => {
   try {
-    await deleteUsersQuacks(req.params.id);
+    // await deleteUsersQuacks(req.params.id);
     await User.findOneAndRemove({ _id: req.params.id });
     res.status(200).send({
       success: true,

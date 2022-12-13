@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express';
 import { getOneQuack, getQuacks, newQuack } from '../helpers/quack-helpers';
 import { Quack } from '../models/quacks-model';
+import { User } from '../models/user-model';
 
 const router = express.Router();
 
@@ -32,6 +33,11 @@ router.post(
     const { name, username, message, user } = req.body;
     try {
       const quack = await newQuack({ name, username, message, user });
+      await User.findOneAndUpdate(
+        { username },
+        { $inc: { quacks: 1 } },
+        { returnDocument: 'after' },
+      );
       res.status(201).send({ success: true, quack });
     } catch (error) {
       res.status(500).send({
@@ -49,6 +55,11 @@ router.delete(
   async (req: Request, res: Response) => {
     try {
       await Quack.findOneAndRemove({ _id: req.params.id });
+      await User.findOneAndUpdate(
+        { username: req.params.username },
+        { $inc: { quacks: -1 } },
+        { returnDocument: 'after' },
+      );
       res.status(200).send({
         success: true,
         message: 'Quack successfully deleted',

@@ -1,5 +1,4 @@
-import mongoose, { Schema } from 'mongoose';
-import { IBlockedUser, IFollowers, IFollowing } from './flock-schema';
+import mongoose from 'mongoose';
 import { IImage } from './image-schema';
 
 export type IUser = {
@@ -13,11 +12,11 @@ export type IUser = {
   tagline: String;
   banner: IImage;
   location: String;
-  quacks: Schema.Types.ObjectId[];
+  quacks: Number;
   reQuacks: Number;
-  following: IFollowing[];
-  followers: IFollowers[];
-  usersBlocked: IBlockedUser[];
+  following: String[];
+  followers: String[];
+  usersBlocked: String[];
 };
 
 export interface IUserModel extends mongoose.Model<IUserDoc> {
@@ -35,9 +34,9 @@ export interface IUserDoc extends mongoose.Document {
   tagline: String;
   banner: IImage;
   location: String;
-  quacks: Schema.Types.ObjectId[];
+  quacks: Number;
   reQuacks: Number;
-  following: IFollowing[];
-  followers: IFollowers[];
-  usersBlocked: IBlockedUser[];
+  following: String[];
+  followers: String[];
+  usersBlocked: String[];
 }

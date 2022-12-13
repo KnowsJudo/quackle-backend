@@ -87,10 +87,12 @@ router.post(
 
 //Delete a users following user
 router.delete(
-  '/api/user/:username/following/:id',
+  '/api/user/:username/following/:following',
   async (req: Request, res: Response) => {
     try {
-      await Following.findOneAndRemove({ _id: req.params.id });
+      await Following.findOneAndRemove({
+        followingUsername: req.params.following,
+      });
       res.status(200).send({
         success: true,
         message: 'Removed following user',
@@ -107,10 +109,12 @@ router.delete(
 
 //Delete a follower
 router.delete(
-  '/api/user/:username/followers/:id',
+  '/api/user/:username/followers/:follower',
   async (req: Request, res: Response) => {
     try {
-      await Follower.findOneAndRemove({ _id: req.params.id });
+      await Follower.findOneAndRemove({
+        followerUsername: req.params.follower,
+      });
       res.status(200).send({
         success: true,
         message: 'Removed follower',
