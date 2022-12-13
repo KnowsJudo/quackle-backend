@@ -58,6 +58,21 @@ router.get(
 router.post(
   '/api/user/:username/following',
   async (req: Request, res: Response) => {
+    if (
+      (
+        await User.find({
+          $and: [
+            { username: req.params.username },
+            { following: req.body.followingUsername },
+          ],
+        })
+      ).length
+    ) {
+      res.status(404).send({
+        message: 'Aleady following user!',
+      });
+      return;
+    }
     try {
       await User.findOneAndUpdate(
         { username: req.body.username },
