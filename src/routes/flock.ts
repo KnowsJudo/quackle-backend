@@ -8,6 +8,7 @@ import {
   newFollowing,
 } from '../helpers/flock-helpers';
 import { Follower, Following } from '../models/flock-model';
+import { User } from '../models/user-model';
 
 const router = express.Router();
 
@@ -58,6 +59,11 @@ router.post(
   '/api/user/:username/following',
   async (req: Request, res: Response) => {
     try {
+      await User.findOneAndUpdate(
+        { username: req.body.username },
+        { $addToSet: { following: req.body.followingUsername } },
+        { returnDocument: 'after' },
+      );
       const following = await newFollowing(req.body);
       res.status(201).send({ success: true, following });
     } catch (error) {
@@ -74,6 +80,11 @@ router.post(
   '/api/user/:username/followers',
   async (req: Request, res: Response) => {
     try {
+      await User.findOneAndUpdate(
+        { username: req.body.username },
+        { $addToSet: { followers: req.body.followerUsername } },
+        { returnDocument: 'after' },
+      );
       const follower = await newFollower(req.body);
       res.status(201).send({ success: true, follower });
     } catch (error) {
@@ -90,6 +101,11 @@ router.delete(
   '/api/user/:username/following/:following',
   async (req: Request, res: Response) => {
     try {
+      await User.findOneAndUpdate(
+        { username: req.params.username },
+        { $pull: { following: req.params.following } },
+        { returnDocument: 'after' },
+      );
       await Following.findOneAndRemove({
         followingUsername: req.params.following,
       });
@@ -112,6 +128,11 @@ router.delete(
   '/api/user/:username/followers/:follower',
   async (req: Request, res: Response) => {
     try {
+      await User.findOneAndUpdate(
+        { username: req.params.username },
+        { $pull: { followers: req.params.follower } },
+        { returnDocument: 'after' },
+      );
       await Follower.findOneAndRemove({
         followerUsername: req.params.follower,
       });
