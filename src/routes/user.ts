@@ -71,7 +71,7 @@ router.get('/api/user/:username?', async (req: Request, res: Response) => {
 
 // Add a user to the database
 router.post('/api/user', async (req: Request, res: Response) => {
-  const { name, username, email } = req.body;
+  const { name, username, email, dateOfBirth } = req.body;
   const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
   try {
@@ -80,6 +80,7 @@ router.post('/api/user', async (req: Request, res: Response) => {
       username,
       password: hashedPassword,
       email,
+      dateOfBirth,
     });
     res.status(201).send({ success: true, user });
   } catch (error) {
