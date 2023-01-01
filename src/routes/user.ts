@@ -117,7 +117,11 @@ router.patch(
           success: true,
           message: 'User successfully updated',
         });
-      } else {
+      } else if (
+        req.body.option === 'name' ||
+        req.body.option === 'tagline' ||
+        req.body.option === 'location'
+      ) {
         await User.findOneAndUpdate(
           { username: req.params.username },
           {
@@ -127,6 +131,10 @@ router.patch(
         res.status(200).send({
           success: true,
           message: 'User successfully updated',
+        });
+      } else {
+        res.status(404).send({
+          message: 'Incorrect patch option',
         });
       }
     } catch (error) {
