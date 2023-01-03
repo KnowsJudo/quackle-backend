@@ -6,6 +6,7 @@ export const newQuack = async (props: {
   name: string;
   username: string;
   message: string;
+  atUser: string;
 }) => {
   const quack = Quack.build({
     ...props,

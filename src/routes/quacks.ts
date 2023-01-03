@@ -30,9 +30,9 @@ router.get(
 router.post(
   '/api/user/:username/quacks',
   async (req: Request, res: Response) => {
-    const { name, username, message, user } = req.body;
+    const { name, username, message, user, atUser } = req.body;
     try {
-      const quack = await newQuack({ name, username, message, user });
+      const quack = await newQuack({ name, username, message, user, atUser });
       await User.findOneAndUpdate(
         { username },
         { $inc: { quacks: 1 } },

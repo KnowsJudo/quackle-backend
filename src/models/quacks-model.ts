@@ -6,6 +6,7 @@ const quackSchema: Schema<IQuackDoc> = new mongoose.Schema({
   name: { type: String, required: true },
   username: { type: String, required: true },
   message: { type: String, required: true },
+  atUser: { type: String },
   quackedAt: { type: Date, required: true },
 });
 

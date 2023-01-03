@@ -5,6 +5,7 @@ export interface IQuack {
   name: String;
   username: String;
   message: String;
+  atUser: String;
   quackedAt: Date;
 }
 
@@ -17,5 +18,6 @@ export interface IQuackDoc extends mongoose.Document {
   name: String;
   username: String;
   message: String;
+  atUser: String;
   quackedAt: Date;
 }
