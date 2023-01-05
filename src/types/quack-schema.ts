@@ -7,6 +7,7 @@ export interface IQuack {
   message: String;
   atUser: String;
   quackedAt: Date;
+  likes: String[];
 }
 
 export interface IQuackModel extends mongoose.Model<IQuackDoc> {
@@ -20,4 +21,5 @@ export interface IQuackDoc extends mongoose.Document {
   message: String;
   atUser: String;
   quackedAt: Date;
+  likes: String[];
 }

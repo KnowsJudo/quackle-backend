@@ -11,6 +11,7 @@ export const newQuack = async (props: {
   const quack = Quack.build({
     ...props,
     quackedAt: new Date(),
+    likes: [],
   });
   await quack.save();
   return quack;

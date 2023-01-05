@@ -49,6 +49,30 @@ router.post(
   },
 );
 
+//Like a quack
+router.patch(
+  '/api/user/:username/quacks/:id',
+  async (req: Request, res: Response) => {
+    try {
+      await Quack.findOneAndUpdate(
+        { username: req.params.username },
+        { $addToSet: { likes: req.body.likedBy } },
+        { returnDocument: 'after' },
+      );
+      res.status(200).send({
+        success: true,
+        message: 'Quack liked',
+      });
+    } catch (error) {
+      res.status(404).send({
+        success: false,
+        message: 'Could not like quack',
+        error,
+      });
+    }
+  },
+);
+
 //Delete a quack
 router.delete(
   '/api/user/:username/quacks/:id',

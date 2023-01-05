@@ -8,6 +8,7 @@ const quackSchema: Schema<IQuackDoc> = new mongoose.Schema({
   message: { type: String, required: true },
   atUser: { type: String },
   quackedAt: { type: Date, required: true },
+  likes: [{ type: String }],
 });
 
 quackSchema.statics.build = (item: IQuack) => new Quack(item);
