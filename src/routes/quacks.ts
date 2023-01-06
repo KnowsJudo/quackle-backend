@@ -55,8 +55,8 @@ router.patch(
   async (req: Request, res: Response) => {
     try {
       await Quack.findOneAndUpdate(
-        { username: req.params.username },
-        { $addToSet: { likes: req.body.likedBy } },
+        { _id: req.params.id },
+        { $addToSet: { likes: req.body.likedUsername } },
         { returnDocument: 'after' },
       );
       res.status(200).send({
@@ -67,6 +67,30 @@ router.patch(
       res.status(404).send({
         success: false,
         message: 'Could not like quack',
+        error,
+      });
+    }
+  },
+);
+
+//Un-like a quack
+router.patch(
+  '/api/user/:username/quacks/:id',
+  async (req: Request, res: Response) => {
+    try {
+      await Quack.findOneAndUpdate(
+        { _id: req.params.id },
+        { $pull: { likes: req.body.likedUsername } },
+        { returnDocument: 'after' },
+      );
+      res.status(200).send({
+        success: true,
+        message: 'Quack un-liked',
+      });
+    } catch (error) {
+      res.status(404).send({
+        success: false,
+        message: 'Could not un-like quack',
         error,
       });
     }
