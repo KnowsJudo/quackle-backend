@@ -14,6 +14,7 @@ const userSchema: Schema<IUserDoc> = new mongoose.Schema({
   location: { type: String },
   quacks: { type: Number },
   reQuacks: { type: Number },
+  likedQuacks: [{ type: String }],
   following: [{ type: String }],
   followers: [{ type: String }],
   usersBlocked: [{ type: String }],

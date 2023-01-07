@@ -18,6 +18,7 @@ export const newUser = async (props: {
     location: '',
     quacks: 0,
     reQuacks: 0,
+    likedQuacks: [],
     following: [],
     followers: [],
     usersBlocked: [],

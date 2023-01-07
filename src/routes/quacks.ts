@@ -60,6 +60,11 @@ router.patch(
           { $addToSet: { likes: req.body.likedUsername } },
           { returnDocument: 'after' },
         );
+        await User.findOneAndUpdate(
+          { username: req.body.likedUsername },
+          { $addToSet: { likedQuacks: req.params.id } },
+          { returnDocument: 'after' },
+        );
         res.status(200).send({
           success: true,
           message: 'Quack liked',
@@ -68,6 +73,11 @@ router.patch(
         await Quack.findOneAndUpdate(
           { _id: req.params.id },
           { $pull: { likes: req.body.likedUsername } },
+          { returnDocument: 'after' },
+        );
+        await User.findOneAndUpdate(
+          { username: req.body.likedUsername },
+          { $pull: { likedQuacks: req.params.id } },
           { returnDocument: 'after' },
         );
         res.status(200).send({
