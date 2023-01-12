@@ -16,6 +16,7 @@ export const newUser = async (props: {
     tagline: '',
     banner: new Image(),
     location: '',
+    biography: '',
     quacks: 0,
     reQuacks: 0,
     likedQuacks: [],

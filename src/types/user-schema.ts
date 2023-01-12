@@ -12,6 +12,7 @@ export type IUser = {
   tagline: String;
   banner: IImage;
   location: String;
+  biography: String;
   quacks: Number;
   reQuacks: Number;
   likedQuacks: String[];
@@ -35,6 +36,7 @@ export interface IUserDoc extends mongoose.Document {
   tagline: String;
   banner: IImage;
   location: String;
+  biography: String;
   quacks: Number;
   reQuacks: Number;
   likedQuacks: String[];

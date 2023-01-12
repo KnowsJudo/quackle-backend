@@ -1,12 +1,7 @@
 import express, { Request, Response } from 'express';
 import { User } from '../models/user-model';
 import { Image } from '../models/image-model';
-import {
-  deleteUsersQuacks,
-  findOneUser,
-  getUsers,
-  newUser,
-} from '../helpers/user-helpers';
+import { findOneUser, getUsers, newUser } from '../helpers/user-helpers';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
@@ -54,6 +49,7 @@ router.get('/api/user/:username?', async (req: Request, res: Response) => {
         tagline: user.tagline,
         banner: user.banner,
         location: user.location,
+        biography: user.biography,
         quacks: user.quacks,
         reQuacks: user.reQuacks,
         likedQuacks: user.likedQuacks,
@@ -121,7 +117,8 @@ router.patch(
       } else if (
         req.body.option === 'name' ||
         req.body.option === 'tagline' ||
-        req.body.option === 'location'
+        req.body.option === 'location' ||
+        req.body.option === 'biography'
       ) {
         await User.findOneAndUpdate(
           { username: req.params.username },
@@ -171,6 +168,7 @@ router.post('/api/user/login', async (req, res) => {
           tagline: user.tagline,
           banner: user.banner,
           location: user.location,
+          biography: user.biography,
           quacks: user.quacks,
           reQuacks: user.reQuacks,
           likedQuacks: user.likedQuacks,
