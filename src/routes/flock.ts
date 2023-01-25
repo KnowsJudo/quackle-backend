@@ -116,14 +116,14 @@ router.delete(
   '/api/user/:username/following/:following',
   async (req: Request, res: Response) => {
     try {
+      await Following.findOneAndRemove({
+        followingUsername: req.params.following,
+      });
       await User.findOneAndUpdate(
         { username: req.params.username },
         { $pull: { following: req.params.following } },
         { returnDocument: 'after' },
       );
-      await Following.findOneAndRemove({
-        followingUsername: req.params.following,
-      });
       res.status(200).send({
         success: true,
         message: 'Removed following user',
