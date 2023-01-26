@@ -18,6 +18,7 @@ try {
 }
 
 const mongoCred = process.env.MONGO_URI;
+export const jwtSecret = process.env.JWT_SECRET_KEY;
 const port = 3001;
 const app = express();
 

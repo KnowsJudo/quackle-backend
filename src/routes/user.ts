@@ -2,16 +2,13 @@ import express, { Request, Response } from 'express';
 import { User } from '../models/user-model';
 import { Image } from '../models/image-model';
 import { findOneUser, getUsers, newUser } from '../helpers/user-helpers';
+import { jwtSecret } from '..';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
 import multer from 'multer';
 import fs from 'fs';
 
-dotenv.config();
 const router = express.Router();
-
-const jwtSecret = process.env.JWT_SECRET_KEY;
 
 const storage = multer.diskStorage({
   destination: (req, files, dest) => {
