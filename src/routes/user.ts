@@ -10,14 +10,7 @@ import fs from 'fs';
 
 const router = express.Router();
 
-const storage = multer.diskStorage({
-  destination: (req, files, dest) => {
-    dest(null, './uploads/');
-  },
-  filename: (req, file, dest) => {
-    dest(null, file.originalname);
-  },
-});
+const storage = multer.memoryStorage();
 
 const upload = multer({ storage: storage });
 
@@ -96,7 +89,7 @@ router.patch(
         const filename = req.file?.originalname;
         const image = new Image({
           name: filename,
-          data: fs.readFileSync(`./uploads/${filename}`),
+          data: req.file?.buffer,
           contentType: req.file?.mimetype,
         });
         image.save();
