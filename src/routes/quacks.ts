@@ -5,7 +5,9 @@ import { User } from '../models/user-model';
 
 const router = express.Router();
 
-//List quacks
+/* List quacks
+ * @requiresAuth: false
+ */
 router.get(
   '/api/user/:username/quacks/:id?',
   async (req: Request, res: Response) => {
@@ -49,7 +51,9 @@ router.post(
   },
 );
 
-//Like or un-like a quack
+/* Like or un-like a quack
+ * @requiresAuth: true
+ */
 router.patch(
   '/api/user/:username/quacks/:id',
   async (req: Request, res: Response) => {

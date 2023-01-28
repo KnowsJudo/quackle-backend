@@ -3,6 +3,7 @@ import { User } from '../models/user-model';
 import { Image } from '../models/image-model';
 import { findOneUser, getUsers, newUser } from '../helpers/user-helpers';
 import { jwtSecret } from '..';
+import { verifyToken } from '../helpers/jwtVerify';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import multer from 'multer';
@@ -56,7 +57,9 @@ router.get('/api/user/:username?', async (req: Request, res: Response) => {
   }
 });
 
-// Add a user to the database
+/* Add a user to the database
+ * @requiresAuth: false
+ */
 router.post('/api/user', async (req: Request, res: Response) => {
   const { name, username, email, dateOfBirth } = req.body;
   const hashedPassword = await bcrypt.hash(req.body.password, 10);
@@ -79,11 +82,27 @@ router.post('/api/user', async (req: Request, res: Response) => {
   }
 });
 
-//Edit a user's details
+/* Edit a user's details
+ * @requiresAuth: true
+ */
 router.patch(
   '/api/user/:username',
   upload.single('image'),
   async (req: Request, res: Response) => {
+    //Check jwt token
+    const token = req.headers['authorization'];
+    if (!token) {
+      return res.status(401).send({
+        message: 'No token provided.',
+      });
+    }
+    try {
+      verifyToken(token);
+    } catch (error) {
+      return res.status(401).send({
+        message: 'Token invalid.',
+      });
+    }
     try {
       if (req.body.option === 'avatar' || req.body.option === 'banner') {
         const filename = req.file?.originalname;
