@@ -13,7 +13,12 @@ const router = express.Router();
 
 const storage = multer.memoryStorage();
 
-const upload = multer({ storage: storage });
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 2000000,
+  },
+});
 
 //List users
 router.get('/api/user/:username?', async (req: Request, res: Response) => {
@@ -105,6 +110,9 @@ router.patch(
     }
     try {
       if (req.body.option === 'avatar' || req.body.option === 'banner') {
+        if (!req.file) {
+          return res.status(400).send('File is too large');
+        }
         const filename = req.file?.originalname;
         const image = new Image({
           name: filename,
