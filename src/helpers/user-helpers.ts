@@ -28,7 +28,8 @@ export const newUser = async (props: {
   return user;
 };
 
-export const getUsers = async (limit: number) => await User.find().limit(limit);
+export const getUsers = async (limit: number) =>
+  await User.find().select('-password -email -usersBlocked').limit(limit);
 
 export const findOneUser = async (username: string) =>
   await User.findOne({ username: { $regex: username, $options: 'i' } })
