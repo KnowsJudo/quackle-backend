@@ -10,6 +10,7 @@ import {
 import { verifyToken } from '../helpers/jwtVerify';
 import { Follower, Following } from '../models/flock-model';
 import { User } from '../models/user-model';
+import { JwtPayload } from 'jsonwebtoken';
 
 const router = express.Router();
 
@@ -69,7 +70,12 @@ router.post(
       });
     }
     try {
-      verifyToken(token);
+      const payload = verifyToken(token) as JwtPayload;
+      if (payload.username !== req.params.username) {
+        return res.status(401).send({
+          message: 'Token invalid.',
+        });
+      }
     } catch (error) {
       return res.status(401).send({
         message: 'Token invalid.',
@@ -121,7 +127,12 @@ router.post(
       });
     }
     try {
-      verifyToken(token);
+      const payload = verifyToken(token) as JwtPayload;
+      if (payload.username !== req.body.followerUsername) {
+        return res.status(401).send({
+          message: 'Token invalid.',
+        });
+      }
     } catch (error) {
       return res.status(401).send({
         message: 'Token invalid.',

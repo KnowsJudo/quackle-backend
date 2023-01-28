@@ -102,7 +102,6 @@ router.patch(
       });
     }
     try {
-      verifyToken(token);
       const payload = verifyToken(token) as JwtPayload;
       if (payload.username !== req.params.username) {
         return res.status(401).send({

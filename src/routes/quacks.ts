@@ -1,4 +1,5 @@
 import express, { Request, Response } from 'express';
+import { JwtPayload } from 'jsonwebtoken';
 import { verifyToken } from '../helpers/jwtVerify';
 import { getOneQuack, getQuacks, newQuack } from '../helpers/quack-helpers';
 import { Quack } from '../models/quacks-model';
@@ -43,7 +44,12 @@ router.post(
       });
     }
     try {
-      verifyToken(token);
+      const payload = verifyToken(token) as JwtPayload;
+      if (payload.username !== req.params.username) {
+        return res.status(401).send({
+          message: 'Token invalid.',
+        });
+      }
     } catch (error) {
       return res.status(401).send({
         message: 'Token invalid.',
@@ -82,7 +88,12 @@ router.patch(
       });
     }
     try {
-      verifyToken(token);
+      const payload = verifyToken(token) as JwtPayload;
+      if (payload.username !== req.body.likedUsername) {
+        return res.status(401).send({
+          message: 'Token invalid.',
+        });
+      }
     } catch (error) {
       return res.status(401).send({
         message: 'Token invalid.',
