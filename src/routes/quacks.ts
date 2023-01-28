@@ -1,4 +1,5 @@
 import express, { Request, Response } from 'express';
+import { verifyToken } from '../helpers/jwtVerify';
 import { getOneQuack, getQuacks, newQuack } from '../helpers/quack-helpers';
 import { Quack } from '../models/quacks-model';
 import { User } from '../models/user-model';
@@ -28,10 +29,26 @@ router.get(
   },
 );
 
-//Add new quack
+/* Add a new quack
+ * @requiresAuth: true
+ */
 router.post(
   '/api/user/:username/quacks',
   async (req: Request, res: Response) => {
+    //Check jwt token
+    const token = req.headers['authorization'];
+    if (!token) {
+      return res.status(401).send({
+        message: 'No token provided.',
+      });
+    }
+    try {
+      verifyToken(token);
+    } catch (error) {
+      return res.status(401).send({
+        message: 'Token invalid.',
+      });
+    }
     const { name, username, message, user, atUser } = req.body;
     try {
       const quack = await newQuack({ name, username, message, user, atUser });
@@ -57,6 +74,20 @@ router.post(
 router.patch(
   '/api/user/:username/quacks/:id',
   async (req: Request, res: Response) => {
+    //Check jwt token
+    const token = req.headers['authorization'];
+    if (!token) {
+      return res.status(401).send({
+        message: 'No token provided.',
+      });
+    }
+    try {
+      verifyToken(token);
+    } catch (error) {
+      return res.status(401).send({
+        message: 'Token invalid.',
+      });
+    }
     try {
       if (req.body.liked) {
         await Quack.findOneAndUpdate(

@@ -7,6 +7,7 @@ import {
   newFollower,
   newFollowing,
 } from '../helpers/flock-helpers';
+import { verifyToken } from '../helpers/jwtVerify';
 import { Follower, Following } from '../models/flock-model';
 import { User } from '../models/user-model';
 
@@ -54,10 +55,26 @@ router.get(
   },
 );
 
-//Add a following user
+/* Add a following user
+ * @requiresAuth: true
+ */
 router.post(
   '/api/user/:username/following',
   async (req: Request, res: Response) => {
+    //Check jwt token
+    const token = req.headers['authorization'];
+    if (!token) {
+      return res.status(401).send({
+        message: 'No token provided.',
+      });
+    }
+    try {
+      verifyToken(token);
+    } catch (error) {
+      return res.status(401).send({
+        message: 'Token invalid.',
+      });
+    }
     if (
       (
         await User.find({
@@ -90,10 +107,26 @@ router.post(
   },
 );
 
-//Add a follower
+/* Add a follower
+ * @requiresAuth: true
+ */
 router.post(
   '/api/user/:username/followers',
   async (req: Request, res: Response) => {
+    //Check jwt token
+    const token = req.headers['authorization'];
+    if (!token) {
+      return res.status(401).send({
+        message: 'No token provided.',
+      });
+    }
+    try {
+      verifyToken(token);
+    } catch (error) {
+      return res.status(401).send({
+        message: 'Token invalid.',
+      });
+    }
     try {
       await User.findOneAndUpdate(
         { username: req.body.username },
