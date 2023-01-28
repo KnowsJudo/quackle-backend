@@ -5,7 +5,7 @@ import { findOneUser, getUsers, newUser } from '../helpers/user-helpers';
 import { jwtSecret } from '..';
 import { verifyToken } from '../helpers/jwtVerify';
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 import multer from 'multer';
 import fs from 'fs';
 
@@ -103,6 +103,12 @@ router.patch(
     }
     try {
       verifyToken(token);
+      const payload = verifyToken(token) as JwtPayload;
+      if (payload.username !== req.params.username) {
+        return res.status(401).send({
+          message: 'Token invalid.',
+        });
+      }
     } catch (error) {
       return res.status(401).send({
         message: 'Token invalid.',
