@@ -15,7 +15,7 @@ const router = express.Router();
 
 const storage = multer.diskStorage({
   destination: (req, files, dest) => {
-    dest(null, './');
+    dest(null, '/tmp');
   },
   filename: (req, file, dest) => {
     dest(null, file.originalname);
@@ -139,7 +139,6 @@ router.patch(
         if (!req.file) {
           return res.status(400).send('File is too large');
         }
-        console.log(fs.readdirSync('./'));
         const validationResult = await validateMIMEType(req.file.path, {
           originalFilename: req.file?.originalname,
           allowMimeTypes: [
@@ -151,14 +150,14 @@ router.patch(
         });
         const filename = req.file?.originalname;
         if (!validationResult.ok) {
-          fs.unlink(`./${filename}`, (err) => console.log(err));
+          fs.unlink(`/tmp/${filename}`, (err) => console.log(err));
           return res.status(400).send({
             message: 'Invalid file type',
           });
         }
         const image = new Image({
           name: filename,
-          data: fs.readFileSync(`./${filename}`),
+          data: fs.readFileSync(`/tmp/${filename}`),
           contentType: req.file?.mimetype,
         });
         image.save();
@@ -168,7 +167,7 @@ router.patch(
             [req.body.option]: image,
           },
         );
-        fs.unlink(`./${filename}`, (err) => console.log(err));
+        fs.unlink(`/tmp/${filename}`, (err) => console.log(err));
         res.status(200).send({
           success: true,
           message: 'User successfully updated',
