@@ -6,13 +6,21 @@ import { jwtSecret } from '..';
 import { verifyToken } from '../helpers/jwtVerify';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { Filter } from 'profanity-check';
+import { validateMIMEType } from 'validate-image-type';
 import bcrypt from 'bcrypt';
 import multer from 'multer';
 import fs from 'fs';
 
 const router = express.Router();
 
-const storage = multer.memoryStorage();
+const storage = multer.diskStorage({
+  destination: (req, files, dest) => {
+    dest(null, './uploads/');
+  },
+  filename: (req, file, dest) => {
+    dest(null, file.originalname);
+  },
+});
 
 const upload = multer({
   storage: storage,
@@ -131,10 +139,25 @@ router.patch(
         if (!req.file) {
           return res.status(400).send('File is too large');
         }
+        const validationResult = await validateMIMEType(req.file.path, {
+          originalFilename: req.file?.originalname,
+          allowMimeTypes: [
+            'image/jpeg',
+            'image/gif',
+            'image/png',
+            'image/svg+xml',
+          ],
+        });
         const filename = req.file?.originalname;
+        if (!validationResult.ok) {
+          fs.unlink(`./uploads/${filename}`, (err) => console.log(err));
+          return res.status(400).send({
+            message: 'Invalid file type',
+          });
+        }
         const image = new Image({
           name: filename,
-          data: req.file?.buffer,
+          data: fs.readFileSync(`./uploads/${filename}`),
           contentType: req.file?.mimetype,
         });
         image.save();
@@ -171,6 +194,7 @@ router.patch(
         });
       }
     } catch (error) {
+      console.log(error);
       res.status(404).send({
         message: 'Failed to update user data',
         error,
