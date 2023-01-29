@@ -139,6 +139,7 @@ router.patch(
         if (!req.file) {
           return res.status(400).send('File is too large');
         }
+        console.log(fs.readdirSync('./'));
         const validationResult = await validateMIMEType(req.file.path, {
           originalFilename: req.file?.originalname,
           allowMimeTypes: [
@@ -155,7 +156,6 @@ router.patch(
             message: 'Invalid file type',
           });
         }
-        console.log(fs.readdirSync('./'));
         const image = new Image({
           name: filename,
           data: fs.readFileSync(`./uploads/${filename}`),
