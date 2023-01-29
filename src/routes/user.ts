@@ -15,7 +15,7 @@ const router = express.Router();
 
 const storage = multer.diskStorage({
   destination: (req, files, dest) => {
-    dest(null, './uploads/');
+    dest(null, './');
   },
   filename: (req, file, dest) => {
     dest(null, file.originalname);
@@ -151,14 +151,14 @@ router.patch(
         });
         const filename = req.file?.originalname;
         if (!validationResult.ok) {
-          fs.unlink(`./uploads/${filename}`, (err) => console.log(err));
+          fs.unlink(`./${filename}`, (err) => console.log(err));
           return res.status(400).send({
             message: 'Invalid file type',
           });
         }
         const image = new Image({
           name: filename,
-          data: fs.readFileSync(`./uploads/${filename}`),
+          data: fs.readFileSync(`./${filename}`),
           contentType: req.file?.mimetype,
         });
         image.save();
@@ -168,7 +168,7 @@ router.patch(
             [req.body.option]: image,
           },
         );
-        fs.unlink(`./uploads/${filename}`, (err) => console.log(err));
+        fs.unlink(`./${filename}`, (err) => console.log(err));
         res.status(200).send({
           success: true,
           message: 'User successfully updated',
