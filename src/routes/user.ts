@@ -4,8 +4,9 @@ import { Image } from '../models/image-model';
 import { findOneUser, getUsers, newUser } from '../helpers/user-helpers';
 import { jwtSecret } from '..';
 import { verifyToken } from '../helpers/jwtVerify';
-import bcrypt from 'bcrypt';
 import jwt, { JwtPayload } from 'jsonwebtoken';
+import { Filter } from 'profanity-check';
+import bcrypt from 'bcrypt';
 import multer from 'multer';
 import fs from 'fs';
 
@@ -19,6 +20,9 @@ const upload = multer({
     fileSize: 2000000,
   },
 });
+
+const defaultFilter = new Filter();
+const regex = /a{1,}b{1,}o{1,}(s{1,})?/;
 
 //List users
 router.get('/api/user/:username?', async (req: Request, res: Response) => {
@@ -67,8 +71,17 @@ router.get('/api/user/:username?', async (req: Request, res: Response) => {
  */
 router.post('/api/user', async (req: Request, res: Response) => {
   const { name, username, email, dateOfBirth } = req.body;
+  if (
+    defaultFilter.isProfane(name) ||
+    regex.test(name) ||
+    defaultFilter.isProfane(username) ||
+    regex.test(username)
+  ) {
+    return res
+      .status(400)
+      .send({ success: false, message: 'Invalid text detected' });
+  }
   const hashedPassword = await bcrypt.hash(req.body.password, 10);
-
   try {
     const user = await newUser({
       name,
