@@ -174,7 +174,7 @@ router.post('/api/user/login', async (req, res) => {
     const match = await bcrypt.compare(password, user.password as string);
     if (match) {
       const token = jwt.sign(req.body, jwtSecret as string, {
-        expiresIn: 1800,
+        expiresIn: 3600,
       });
       res.status(200).send({
         success: true,
