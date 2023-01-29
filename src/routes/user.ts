@@ -155,6 +155,7 @@ router.patch(
             message: 'Invalid file type',
           });
         }
+        console.log(fs.readdirSync('./'));
         const image = new Image({
           name: filename,
           data: fs.readFileSync(`./uploads/${filename}`),
