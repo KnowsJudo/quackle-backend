@@ -6,16 +6,9 @@ import { quackRouter } from './routes/quacks';
 import { userRouter } from './routes/user';
 import { createLog } from './middleware/log';
 import { flockRouter } from './routes/flock';
-import * as dotenv from 'dotenv';
-import path from 'path';
+import setEnv from './helpers/env-path';
 
-try {
-  dotenv.config({
-    path: path.join(__dirname, `../.env.${process.env.NODE_ENV}`),
-  });
-} catch (error) {
-  console.log('Could not load env variables');
-}
+setEnv();
 
 const mongoCred = process.env.MONGO_URI;
 export const jwtSecret = process.env.JWT_SECRET_KEY;

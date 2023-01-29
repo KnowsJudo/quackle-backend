@@ -10,12 +10,17 @@ import { validateMIMEType } from 'validate-image-type';
 import bcrypt from 'bcrypt';
 import multer from 'multer';
 import fs from 'fs';
+import setEnv from '../helpers/env-path';
+
+setEnv();
+
+const tempDir = process.env.TEMP_DIR as string;
 
 const router = express.Router();
 
 const storage = multer.diskStorage({
   destination: (req, files, dest) => {
-    dest(null, '/tmp');
+    dest(null, tempDir);
   },
   filename: (req, file, dest) => {
     dest(null, file.originalname);
@@ -150,14 +155,14 @@ router.patch(
         });
         const filename = req.file?.originalname;
         if (!validationResult.ok) {
-          fs.unlink(`/tmp/${filename}`, (err) => console.log(err));
+          fs.unlink(`${tempDir}/${filename}`, (err) => console.log(err));
           return res.status(400).send({
             message: 'Invalid file type',
           });
         }
         const image = new Image({
           name: filename,
-          data: fs.readFileSync(`/tmp/${filename}`),
+          data: fs.readFileSync(`${tempDir}/${filename}`),
           contentType: req.file?.mimetype,
         });
         image.save();
@@ -167,7 +172,7 @@ router.patch(
             [req.body.option]: image,
           },
         );
-        fs.unlink(`/tmp/${filename}`, (err) => console.log(err));
+        fs.unlink(`${tempDir}/${filename}`, (err) => console.log(err));
         res.status(200).send({
           success: true,
           message: 'User successfully updated',
