@@ -15,3 +15,11 @@ export interface IImageDoc extends mongoose.Document {
   data: Buffer;
   contentType: String;
 }
+
+export const allowedImageTypes = [
+  'image/jpeg',
+  'image/png',
+  'image/svg+xml',
+  'image/gif',
+  'image/webp',
+];

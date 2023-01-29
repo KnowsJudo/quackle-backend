@@ -7,6 +7,7 @@ import { verifyToken } from '../helpers/jwtVerify';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { Filter } from 'profanity-check';
 import { validateMIMEType } from 'validate-image-type';
+import { allowedImageTypes } from '../types/image-schema';
 import bcrypt from 'bcrypt';
 import multer from 'multer';
 import fs from 'fs';
@@ -146,12 +147,7 @@ router.patch(
         }
         const validationResult = await validateMIMEType(req.file.path, {
           originalFilename: req.file?.originalname,
-          allowMimeTypes: [
-            'image/jpeg',
-            'image/gif',
-            'image/png',
-            'image/svg+xml',
-          ],
+          allowMimeTypes: allowedImageTypes,
         });
         const filename = req.file?.originalname;
         if (!validationResult.ok) {
