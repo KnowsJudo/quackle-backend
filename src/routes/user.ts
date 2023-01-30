@@ -116,7 +116,7 @@ router.post('/api/user', async (req: Request, res: Response) => {
     regex.test(name) ||
     defaultFilter.isProfane(username) ||
     regex.test(username) ||
-    emailRegex.test(email)
+    !emailRegex.test(email)
   ) {
     return res
       .status(400)
