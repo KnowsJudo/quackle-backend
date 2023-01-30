@@ -2,16 +2,18 @@ import { Schema } from 'mongoose';
 import { Quack } from '../models/quacks-model';
 
 export const newQuack = async (props: {
-  user: Schema.Types.ObjectId;
+  userId: Schema.Types.ObjectId;
   name: string;
   username: string;
-  message: string;
-  atUser: string;
+  content: string;
+  avatar?: string;
+  atUsers: string[];
 }) => {
   const quack = Quack.build({
     ...props,
     quackedAt: new Date(),
     likes: [],
+    replies: [],
   });
   await quack.save();
   return quack;

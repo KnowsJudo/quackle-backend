@@ -1,13 +1,15 @@
 import mongoose, { Schema } from 'mongoose';
 
 export interface IQuack {
-  user: Schema.Types.ObjectId;
+  userId: Schema.Types.ObjectId;
   name: String;
   username: String;
-  message: String;
-  atUser: String;
+  avatar?: String;
+  content: String;
+  atUsers: String[];
   quackedAt: Date;
   likes: String[];
+  replies: IQuack[];
 }
 
 export interface IQuackModel extends mongoose.Model<IQuackDoc> {
@@ -15,11 +17,13 @@ export interface IQuackModel extends mongoose.Model<IQuackDoc> {
 }
 
 export interface IQuackDoc extends mongoose.Document {
-  user: Schema.Types.ObjectId;
+  userId: Schema.Types.ObjectId;
   name: String;
   username: String;
-  message: String;
-  atUser: String;
+  avatar?: String;
+  content: String;
+  atUsers: String[];
   quackedAt: Date;
   likes: String[];
+  replies: IQuack[];
 }

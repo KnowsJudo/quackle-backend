@@ -55,9 +55,16 @@ router.post(
         message: 'Token invalid.',
       });
     }
-    const { name, username, message, user, atUser } = req.body;
+    const { name, username, content, avatar, userId, atUsers } = req.body;
     try {
-      const quack = await newQuack({ name, username, message, user, atUser });
+      const quack = await newQuack({
+        userId,
+        name,
+        username,
+        content,
+        avatar,
+        atUsers,
+      });
       await User.findOneAndUpdate(
         { username },
         { $inc: { quacks: 1 } },
