@@ -21,5 +21,16 @@
       "src": "/(.*)",
       "dest": "/src/index.ts"
     }
+  ],
+  "headers": [
+    {
+      "source": "/api/image/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600"
+        }
+      ]
+    }
   ]
 }
