@@ -138,7 +138,9 @@ router.post('/api/user', async (req: Request, res: Response) => {
   }
 });
 
-//Image route
+/* Image route
+ * @requiresAuth: false
+ */
 router.get('/api/image/:id/:image', async (req: Request, res: Response) => {
   try {
     const image = await Image.findOne({
