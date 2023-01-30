@@ -38,7 +38,9 @@ const upload = multer({
 const defaultFilter = new Filter();
 const regex = /a{1,}b{1,}o{1,}(s{1,})?/;
 
-//List users
+/* List user or multiple users
+ * @requiresAuth: false
+ */
 router.get('/api/user/:username?', async (req: Request, res: Response) => {
   try {
     if (!req.params.username) {
@@ -74,7 +76,28 @@ router.get('/api/user/:username?', async (req: Request, res: Response) => {
     }
   } catch (error) {
     res.status(404).send({
+      success: false,
       message: 'No Users found',
+      error,
+    });
+  }
+});
+
+/* Get trending info
+ * @requiresAuth: false
+ */
+router.get('/api/trending', async (req: Request, res: Response) => {
+  try {
+    const sort = await User.find()
+      .populate('avatar')
+      .select('id name username avatar tagline quacks')
+      .sort({ quacks: -1 })
+      .limit(8);
+    res.status(200).send(sort);
+  } catch (error) {
+    res.status(400).send({
+      success: false,
+      message: 'Error retrieving trending data',
       error,
     });
   }
@@ -204,7 +227,9 @@ router.patch(
   },
 );
 
-//Login
+/* Login
+ * @requiresAuth: false
+ */
 router.post('/api/user/login', async (req, res) => {
   const { username, password } = req.body;
   const user = await User.findOne({ username: username });
