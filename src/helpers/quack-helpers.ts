@@ -20,6 +20,6 @@ export const newQuack = async (props: {
 };
 
 export const getQuacks = async (username: string) =>
-  await Quack.find({ username }).limit(20);
+  await Quack.find({ username }).sort({ quackedAt: -1 });
 
 export const getOneQuack = async (id: String) => Quack.findById(id);
