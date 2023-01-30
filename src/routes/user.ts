@@ -8,11 +8,11 @@ import jwt, { JwtPayload } from 'jsonwebtoken';
 import { Filter } from 'profanity-check';
 import { validateMIMEType } from 'validate-image-type';
 import { allowedImageTypes } from '../types/image-schema';
+import { v4 as uuidv4 } from 'uuid';
 import bcrypt from 'bcrypt';
 import multer from 'multer';
 import fs from 'fs';
 import setEnv from '../helpers/env-path';
-import { v4 as uuidv4 } from 'uuid';
 
 setEnv();
 
@@ -32,12 +32,14 @@ const storage = multer.diskStorage({
 const upload = multer({
   storage: storage,
   limits: {
-    fileSize: 1000000,
+    fileSize: 1536000,
   },
 });
 
 const defaultFilter = new Filter();
-const regex = /a{1,}b{1,}o{1,}(s{1,})?/;
+const regex = /\b([aA4][bB][ou0]{0,2}|[bB]00ng|[bB]o[o0]ng)(?:[sS5]{0,2})\b/;
+const emailRegex =
+  /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])+(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])+)+$/;
 
 /* List user or multiple users
  * @requiresAuth: false
@@ -113,7 +115,8 @@ router.post('/api/user', async (req: Request, res: Response) => {
     defaultFilter.isProfane(name) ||
     regex.test(name) ||
     defaultFilter.isProfane(username) ||
-    regex.test(username)
+    regex.test(username) ||
+    emailRegex.test(email)
   ) {
     return res
       .status(400)
