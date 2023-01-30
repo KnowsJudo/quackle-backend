@@ -19,18 +19,10 @@
     },
     {
       "src": "/(.*)",
-      "dest": "/src/index.ts"
-    }
-  ],
-  "headers": [
-    {
-      "source": "/api/image/(.*)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=3600"
-        }
-      ]
+      "dest": "/src/index.ts",
+      "headers": {
+        "Cache-Control": "public, max-age=3600"
+      }
     }
   ]
 }
