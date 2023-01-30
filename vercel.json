@@ -18,11 +18,15 @@
       "status": 204
     },
     {
-      "src": "/(.*)",
+      "src": "/api/image/(.*)",
       "dest": "/src/index.ts",
       "headers": {
         "Cache-Control": "public, max-age=3600"
       }
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/src/index.ts"
     }
   ]
 }
