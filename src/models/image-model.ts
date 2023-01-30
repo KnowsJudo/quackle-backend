@@ -8,6 +8,8 @@ import {
 
 export const imageSchema: Schema<IImageDoc> = new mongoose.Schema({
   name: { type: String },
+  userId: { type: String },
+  imageType: { type: String },
   data: { type: Buffer },
   contentType: {
     type: String,

@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import { IImage } from './image-schema';
 
 export type IUser = {
-  avatar: IImage;
+  avatar: String;
   name: String;
   username: String;
   password?: String;
@@ -10,7 +10,7 @@ export type IUser = {
   dateOfBirth: Date;
   createdAt: Date;
   tagline: String;
-  banner: IImage;
+  banner: String;
   location: String;
   biography: String;
   quacks: Number;
@@ -26,7 +26,7 @@ export interface IUserModel extends mongoose.Model<IUserDoc> {
 }
 
 export interface IUserDoc extends mongoose.Document {
-  avatar: IImage;
+  avatar: String;
   name: String;
   username: String;
   password?: String;
@@ -34,7 +34,7 @@ export interface IUserDoc extends mongoose.Document {
   dateOfBirth: Date;
   createdAt: Date;
   tagline: String;
-  banner: IImage;
+  banner: String;
   location: String;
   biography: String;
   quacks: Number;

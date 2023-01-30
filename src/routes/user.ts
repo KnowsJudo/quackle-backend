@@ -137,6 +137,33 @@ router.post('/api/user', async (req: Request, res: Response) => {
   }
 });
 
+//Image route
+router.get('/api/image/:id/:image', async (req: Request, res: Response) => {
+  try {
+    const image = await Image.findOne({
+      userId: req.params.id,
+      imageType: req.params.image,
+    });
+    if (!image) {
+      return res
+        .status(400)
+        .send({ success: false, message: 'No image found' });
+    }
+    res.writeHead(200, {
+      'Content-Type': image.contentType.toString(),
+      'Content-Length': image.data.length,
+      'Cross-Origin-Resource-Policy': 'cross-origin',
+    });
+    res.end(image.data);
+  } catch (error) {
+    res.status(500).send({
+      success: false,
+      message: 'Error retrieving image data',
+      error,
+    });
+  }
+});
+
 /* Edit a user's details
  * @requiresAuth: true
  */
@@ -179,18 +206,25 @@ router.patch(
             message: 'Invalid file type',
           });
         }
+        const user = await User.findOne({ username: req.params.username });
+        if (!user) {
+          return res.status(404).send({
+            message: 'Could not find user',
+          });
+        }
+        await Image.deleteOne({ userId: user._id, imageType: req.body.option });
         const image = new Image({
           name: filename,
+          userId: user._id,
+          imageType: req.body.option,
           data: fs.readFileSync(`${tempDir}/${filename}`),
           contentType: req.file?.mimetype,
         });
-        image.save();
-        await User.findOneAndUpdate(
-          { username: req.params.username },
-          {
-            [req.body.option]: image,
-          },
-        );
+        await image.save();
+        await user?.update({
+          [req.body
+            .option]: `${process.env.API_BASE_URI}/image/${user._id}/${req.body.option}`,
+        });
         fs.unlink(`${tempDir}/${filename}`, (err) => console.log(err));
         res.status(200).send({
           success: true,
@@ -219,7 +253,7 @@ router.patch(
       }
     } catch (error) {
       console.log(error);
-      res.status(404).send({
+      res.status(400).send({
         message: 'Failed to update user data',
         error,
       });

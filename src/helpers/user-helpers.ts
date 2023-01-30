@@ -11,10 +11,10 @@ export const newUser = async (props: {
 }) => {
   const user = User.build({
     ...props,
-    avatar: new Image(),
+    avatar: '',
     createdAt: new Date(),
     tagline: '',
-    banner: new Image(),
+    banner: '',
     location: '',
     biography: '',
     quacks: 0,

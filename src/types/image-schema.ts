@@ -2,6 +2,8 @@ import mongoose from 'mongoose';
 
 export type IImage = {
   name: String;
+  userId: String;
+  imageType: 'avatar' | 'banner';
   data: Buffer;
   contentType: String;
 };
@@ -12,6 +14,8 @@ export interface IImageModel extends mongoose.Model<IImageDoc> {
 
 export interface IImageDoc extends mongoose.Document {
   name: String;
+  userId: String;
+  imageType: 'avatar' | 'banner';
   data: Buffer;
   contentType: String;
 }
