@@ -15,6 +15,7 @@ export const imageSchema: Schema<IImageDoc> = new mongoose.Schema({
     type: String,
     enum: allowedImageTypes,
   },
+  version: { type: String },
 });
 
 imageSchema.statics.build = (image: IImage) => new Image(image);

@@ -6,6 +6,7 @@ export type IImage = {
   imageType: 'avatar' | 'banner';
   data: Buffer;
   contentType: String;
+  version: String;
 };
 
 export interface IImageModel extends mongoose.Model<IImageDoc> {
@@ -18,6 +19,7 @@ export interface IImageDoc extends mongoose.Document {
   imageType: 'avatar' | 'banner';
   data: Buffer;
   contentType: String;
+  version: String;
 }
 
 export const allowedImageTypes = [

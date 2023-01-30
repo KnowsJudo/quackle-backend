@@ -12,6 +12,7 @@ import bcrypt from 'bcrypt';
 import multer from 'multer';
 import fs from 'fs';
 import setEnv from '../helpers/env-path';
+import { v4 as uuidv4 } from 'uuid';
 
 setEnv();
 
@@ -213,17 +214,19 @@ router.patch(
           });
         }
         await Image.deleteOne({ userId: user._id, imageType: req.body.option });
+        const versionId = uuidv4();
         const image = new Image({
           name: filename,
           userId: user._id,
           imageType: req.body.option,
           data: fs.readFileSync(`${tempDir}/${filename}`),
           contentType: req.file?.mimetype,
+          version: versionId,
         });
         await image.save();
         await user?.update({
           [req.body
-            .option]: `${process.env.API_BASE_URI}/image/${user._id}/${req.body.option}`,
+            .option]: `${process.env.API_BASE_URI}/image/${user._id}/${req.body.option}?v=${versionId}`,
         });
         fs.unlink(`${tempDir}/${filename}`, (err) => console.log(err));
         res.status(200).send({
