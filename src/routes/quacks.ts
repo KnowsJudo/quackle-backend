@@ -19,11 +19,16 @@ router.get(
         res.status(200).send(data);
       } else {
         const quack = await getOneQuack(req.params.id);
+        if (!quack) {
+          return res.status(404).send({
+            message: 'Quack does not exist',
+          });
+        }
         res.status(200).send(quack);
       }
     } catch (error) {
-      res.status(404).send({
-        message: 'Quack does not exist',
+      res.status(500).send({
+        message: 'Error retreiving quack data',
         error,
       });
     }
@@ -43,6 +48,7 @@ router.post(
         message: 'No token provided.',
       });
     }
+    let author = '';
     try {
       const payload = verifyToken(token) as JwtPayload;
       if (payload.username !== req.params.username) {
@@ -50,23 +56,24 @@ router.post(
           message: 'Token invalid.',
         });
       }
+      author = payload.username;
     } catch (error) {
       return res.status(401).send({
         message: 'Token invalid.',
       });
     }
-    const { name, username, content, avatar, userId, atUsers } = req.body;
+    const { name, content, avatar, userId, atUsers } = req.body;
     try {
       const quack = await newQuack({
         userId,
         name,
-        username,
+        username: author,
         content,
         avatar,
         atUsers,
       });
       await User.findOneAndUpdate(
-        { username },
+        { username: author },
         { $inc: { quacks: 1 } },
         { returnDocument: 'after' },
       );
@@ -139,7 +146,7 @@ router.patch(
         });
       }
     } catch (error) {
-      res.status(404).send({
+      res.status(500).send({
         success: false,
         message: 'Failed to update quack status',
         error,
