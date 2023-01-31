@@ -31,9 +31,7 @@ export const getUsers = async (limit: number) =>
   await User.find().select('-password -email -usersBlocked').limit(limit);
 
 export const findOneUser = async (username: string) =>
-  await User.findOne({ username: { $regex: username, $options: 'i' } })
-    .populate('avatar')
-    .populate('banner');
+  await User.findOne({ username }).populate('avatar').populate('banner');
 
 export const deleteUsersQuacks = async (id: string) =>
   await Quack.deleteMany({ user: id });

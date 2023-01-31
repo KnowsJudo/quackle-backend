@@ -77,7 +77,7 @@ router.get('/api/user/:username?', async (req: Request, res: Response) => {
       });
     }
   } catch (error) {
-    res.status(404).send({
+    res.status(500).send({
       success: false,
       message: 'No Users found',
       error,
@@ -97,9 +97,32 @@ router.get('/api/trending', async (req: Request, res: Response) => {
       .limit(8);
     res.status(200).send(sort);
   } catch (error) {
-    res.status(400).send({
+    res.status(500).send({
       success: false,
       message: 'Error retrieving trending data',
+      error,
+    });
+  }
+});
+
+/* Search database for users
+ * @requiresAuth: false
+ */
+router.get('/api/search/:username', async (req: Request, res: Response) => {
+  try {
+    const user = await User.findOne({
+      username: { $regex: req.params.username, $options: 'i' },
+    }).select('id name username avatar tagline');
+    if (!user) {
+      return res.status(404).send({
+        message: 'User does not exist',
+      });
+    }
+    res.status(200).send(user);
+  } catch (error) {
+    res.status(500).send({
+      success: false,
+      message: 'Error searching users',
       error,
     });
   }
@@ -260,7 +283,7 @@ router.patch(
       }
     } catch (error) {
       console.log(error);
-      res.status(400).send({
+      res.status(500).send({
         message: 'Failed to update user data',
         error,
       });
