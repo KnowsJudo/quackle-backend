@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import { IImage } from './image-schema';
 
 export type IUser = {
   avatar: String;

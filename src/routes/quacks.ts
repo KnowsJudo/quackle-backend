@@ -19,11 +19,6 @@ router.get(
         res.status(200).send(data);
       } else {
         const quack = await getOneQuack(req.params.id);
-        if (!quack) {
-          return res.status(404).send({
-            message: 'Quack does not exist',
-          });
-        }
         res.status(200).send(quack);
       }
     } catch (error) {
@@ -160,6 +155,11 @@ router.delete(
   '/api/user/:username/quacks/:id',
   async (req: Request, res: Response) => {
     try {
+      await User.updateMany(
+        { likedQuacks: req.params.id },
+        { $pull: { likedQuacks: req.params.id } },
+        { returnDocument: 'after' },
+      );
       await Quack.findOneAndRemove({ _id: req.params.id });
       await User.findOneAndUpdate(
         { username: req.params.username },
