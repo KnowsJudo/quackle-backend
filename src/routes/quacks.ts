@@ -30,6 +30,26 @@ router.get(
   },
 );
 
+/* List quacks focused at a user
+ * @requiresAuth: false
+ */
+router.get(
+  '/api/focused/:username/quacks/',
+  async (req: Request, res: Response) => {
+    try {
+      const focused = await Quack.find({ atUsers: req.params.username })
+        .populate('avatar')
+        .sort({ quackedAt: -1 });
+      res.status(200).send(focused);
+    } catch (error) {
+      res.status(500).send({
+        message: 'Error retreiving quack data',
+        error,
+      });
+    }
+  },
+);
+
 /* Add a new quack
  * @requiresAuth: true
  */
