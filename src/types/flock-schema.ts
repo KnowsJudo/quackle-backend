@@ -4,7 +4,7 @@ export interface IFollowing {
   username: String;
   followingName: String;
   followingUsername: String;
-  followingAvatar?: Buffer;
+  followingAvatar?: String;
   followingTagline?: String;
   followingSince: Date;
 }
@@ -17,7 +17,7 @@ export interface IFollowingDoc extends mongoose.Document {
   username: String;
   followingName: String;
   followingUsername: String;
-  followingAvatar?: Buffer;
+  followingAvatar?: String;
   followingTagline?: String;
   followingSince: Date;
 }
@@ -26,7 +26,7 @@ export interface IFollowers {
   username: String;
   followerName: String;
   followerUsername: String;
-  followerAvatar?: Buffer;
+  followerAvatar?: String;
   followerTagline?: String;
   followerSince: Date;
 }
@@ -39,7 +39,7 @@ export interface IFollowersDoc extends mongoose.Document {
   username: String;
   followerName: String;
   followerUsername: String;
-  followerAvatar?: Buffer;
+  followerAvatar?: String;
   followerTagline?: String;
   followerSince: Date;
 }

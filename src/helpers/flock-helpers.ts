@@ -4,7 +4,7 @@ export const newFollowing = async (props: {
   username: string;
   followingName: string;
   followingUsername: string;
-  followingAvatar?: Buffer;
+  followingAvatar?: string;
   followingTagline?: string;
 }) => {
   const following = Following.build({
@@ -25,7 +25,7 @@ export const newFollower = async (props: {
   username: string;
   followerName: string;
   followerUsername: string;
-  followerAvatar?: Buffer;
+  followerAvatar?: string;
   followerTagline?: string;
 }) => {
   const follower = Follower.build({
