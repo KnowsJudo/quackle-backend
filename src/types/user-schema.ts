@@ -14,7 +14,6 @@ export type IUser = {
   location: String;
   biography: String;
   quacks: Number;
-  reQuacks: Number;
   likedQuacks: String[];
   following: String[];
   followers: String[];
@@ -38,7 +37,6 @@ export interface IUserDoc extends mongoose.Document {
   location: String;
   biography: String;
   quacks: Number;
-  reQuacks: Number;
   likedQuacks: String[];
   following: String[];
   followers: String[];
