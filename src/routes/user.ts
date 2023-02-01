@@ -58,24 +58,7 @@ router.get('/api/user/:username?', async (req: Request, res: Response) => {
           message: 'User does not exist',
         });
       }
-      res.status(200).send({
-        id: user._id,
-        avatar: user.avatar,
-        name: user.name,
-        username: user.username,
-        email: user.email,
-        dateOfBirth: user.dateOfBirth,
-        createdAt: user.createdAt,
-        tagline: user.tagline,
-        banner: user.banner,
-        location: user.location,
-        biography: user.biography,
-        quacks: user.quacks,
-        likedQuacks: user.likedQuacks,
-        following: user.following,
-        followers: user.followers,
-        usersBlocked: user.usersBlocked,
-      });
+      res.status(200).send(user);
     }
   } catch (error) {
     res.status(500).send({
@@ -308,7 +291,7 @@ router.post('/api/user/login', async (req, res) => {
         success: true,
         message: 'Successfully logged in',
         data: {
-          id: user._id,
+          _id: user._id,
           avatar: user.avatar,
           name: user.name,
           username: user.username,
@@ -348,7 +331,6 @@ router.delete('/api/user/:id', async (req: Request, res: Response) => {
     // Quacks should rather be flagged as "deleted: true" then omitted from searches
     // await deleteUsersQuacks(req.params.id);
     const data = await User.findOne({ _id: req.params.id });
-    data && console.log(data.username);
     await Quack.updateMany(
       { likes: data?.username },
       { $pull: { likes: data?.username } },
