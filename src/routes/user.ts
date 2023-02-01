@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express';
 import { User } from '../models/user-model';
 import { Image } from '../models/image-model';
+import { Quack } from '../models/quacks-model';
 import { findOneUser, getUsers, newUser } from '../helpers/user-helpers';
 import { jwtSecret } from '..';
 import { verifyToken } from '../helpers/jwtVerify';
@@ -90,7 +91,7 @@ router.get('/api/user/:username?', async (req: Request, res: Response) => {
  */
 router.get('/api/trending', async (req: Request, res: Response) => {
   try {
-    const sort = await User.find()
+    const sort = await User.find({ username: { $ne: '4805' } })
       .populate('avatar')
       .select('id name username avatar tagline quacks')
       .sort({ quacks: -1 })
@@ -339,10 +340,20 @@ router.post('/api/user/login', async (req, res) => {
   });
 });
 
-//Delete a user
+/* Delete a user
+ * @requiresAuth: true (future)
+ */
 router.delete('/api/user/:id', async (req: Request, res: Response) => {
   try {
+    // Quacks should rather be flagged as "deleted: true" then omitted from searches
     // await deleteUsersQuacks(req.params.id);
+    const data = await User.findOne({ _id: req.params.id });
+    data && console.log(data.username);
+    await Quack.updateMany(
+      { likes: data?.username },
+      { $pull: { likes: data?.username } },
+      { returnDocument: 'after' },
+    );
     await User.findOneAndRemove({ _id: req.params.id });
     res.status(200).send({
       success: true,

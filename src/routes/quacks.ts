@@ -170,7 +170,9 @@ router.patch(
   },
 );
 
-//Delete a quack
+/* Delete a quack
+ * @requiresAuth: true (future)
+ */
 router.delete(
   '/api/user/:username/quacks/:id',
   async (req: Request, res: Response) => {
