@@ -1,6 +1,5 @@
 import { Quack } from '../models/quacks-model';
 import { User } from '../models/user-model';
-import { Image } from '../models/image-model';
 
 export const newUser = async (props: {
   name: string;

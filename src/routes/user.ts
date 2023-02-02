@@ -136,7 +136,7 @@ router.post('/api/user', async (req: Request, res: Response) => {
       password: hashedPassword,
       email,
       dateOfBirth,
-      ipAddress: req.ip,
+      ipAddress: (req.headers['x-real-ip'] as string) || req.ip,
     });
     res.status(201).send({ success: true, user });
   } catch (error) {
@@ -308,6 +308,7 @@ router.post('/api/user/login', async (req, res) => {
           following: user.following,
           followers: user.followers,
           usersBlocked: user.usersBlocked,
+          ipAddress: (req.headers['x-real-ip'] as string) || req.ip,
         },
         token,
       });
