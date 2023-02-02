@@ -18,6 +18,8 @@ const userSchema: Schema<IUserDoc> = new mongoose.Schema({
   following: [{ type: String }],
   followers: [{ type: String }],
   usersBlocked: [{ type: String }],
+  ipAddress: { type: String },
+  disabled: { type: Boolean },
 });
 
 userSchema.statics.build = (user: IUser) => new User(user);

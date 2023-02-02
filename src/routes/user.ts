@@ -136,6 +136,7 @@ router.post('/api/user', async (req: Request, res: Response) => {
       password: hashedPassword,
       email,
       dateOfBirth,
+      ipAddress: req.ip,
     });
     res.status(201).send({ success: true, user });
   } catch (error) {

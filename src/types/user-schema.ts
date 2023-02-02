@@ -17,6 +17,8 @@ export type IUser = {
   following: String[];
   followers: String[];
   usersBlocked: String[];
+  ipAddress: String;
+  disabled: Boolean;
 };
 
 export interface IUserModel extends mongoose.Model<IUserDoc> {
@@ -40,4 +42,6 @@ export interface IUserDoc extends mongoose.Document {
   following: String[];
   followers: String[];
   usersBlocked: String[];
+  ipAddress: String;
+  disabled: Boolean;
 }

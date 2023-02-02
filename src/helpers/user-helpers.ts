@@ -8,6 +8,7 @@ export const newUser = async (props: {
   email: string;
   password: string;
   dateOfBirth: Date;
+  ipAddress: string;
 }) => {
   const user = User.build({
     ...props,
@@ -22,16 +23,19 @@ export const newUser = async (props: {
     following: [],
     followers: [],
     usersBlocked: [],
+    disabled: false,
   });
   await user.save();
   return user;
 };
 
 export const getUsers = async (limit: number) =>
-  await User.find().select('-password -email -usersBlocked').limit(limit);
+  await User.find()
+    .select('-password -email -usersBlocked -ipAddress')
+    .limit(limit);
 
 export const findOneUser = async (username: string) =>
-  await User.findOne({ username }).select('-password');
+  await User.findOne({ username }).select('-password -ipAddress -disabled');
 
 export const deleteUsersQuacks = async (id: string) =>
   await Quack.deleteMany({ user: id });
