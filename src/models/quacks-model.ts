@@ -10,6 +10,7 @@ const quackSchema: Schema<IQuackDoc> = new mongoose.Schema({
   atUsers: [{ type: String }],
   quackedAt: { type: Date, required: true },
   likes: [{ type: String }],
+  parentQuackId: { type: String },
   replies: [{ type: Schema.Types.ObjectId, ref: 'Quack' }],
 });
 

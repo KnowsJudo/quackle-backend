@@ -9,6 +9,7 @@ export interface IQuack {
   atUsers: String[];
   quackedAt: Date;
   likes: String[];
+  parentQuackId?: Schema.Types.ObjectId;
   replies: IQuack[];
 }
 
@@ -25,5 +26,6 @@ export interface IQuackDoc extends mongoose.Document {
   atUsers: String[];
   quackedAt: Date;
   likes: String[];
+  parentQuackId?: Schema.Types.ObjectId;
   replies: IQuack[];
 }

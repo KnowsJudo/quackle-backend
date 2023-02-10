@@ -77,7 +77,7 @@ router.post(
         message: 'Token invalid.',
       });
     }
-    const { name, content, avatar, userId, atUsers } = req.body;
+    const { name, content, avatar, userId, atUsers, parentQuackId } = req.body;
     try {
       const quack = await newQuack({
         userId,
