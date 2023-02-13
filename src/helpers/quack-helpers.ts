@@ -8,6 +8,7 @@ export const newQuack = async (props: {
   content: string;
   avatar?: string;
   atUsers: string[];
+  parentQuackId?: Schema.Types.ObjectId;
 }) => {
   const quack = Quack.build({
     ...props,

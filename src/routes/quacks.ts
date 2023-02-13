@@ -86,6 +86,7 @@ router.post(
         content,
         avatar,
         atUsers,
+        parentQuackId,
       });
       await User.findOneAndUpdate(
         { username: author },
