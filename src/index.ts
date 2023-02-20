@@ -12,6 +12,7 @@ setEnv();
 
 const mongoCred = process.env.MONGO_URI;
 export const jwtSecret = process.env.JWT_SECRET_KEY;
+
 const port = 3001;
 const app = express();
 
@@ -37,12 +38,11 @@ app.use(flockRouter);
 try {
   // mongoose.connect('mongodb://localhost:27017/quackle');
   mongoose.connect(mongoCred as string);
-
-  console.log('connected to database');
-} catch (e) {
-  console.error('error connecting to database', e);
+  console.log('Connected to mongoDB');
+} catch (error) {
+  console.error('Error connecting to mongoDB', error);
 }
 
 app.listen(port, () => {
-  console.log(`server running on port ${port}`);
+  console.log(`Quackle running on port ${port}`);
 });
