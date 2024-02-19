@@ -79,7 +79,7 @@ router.get('/api/trending', async (req: Request, res: Response) => {
       .populate('avatar')
       .select('id name username avatar tagline quacks')
       .sort({ quacks: -1 })
-      .limit(15);
+      .limit(17);
     res.status(200).send(sort);
   } catch (error) {
     res.status(500).send({
