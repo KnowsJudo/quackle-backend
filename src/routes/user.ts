@@ -93,22 +93,22 @@ router.get('/api/trending', async (req: Request, res: Response) => {
 /* Get new user info
  * @requiresAuth: false
  */
-// router.get('/api/new', async (req: Request, res: Response) => {
-//   try {
-//     const sort = await User.find({ username: { $ne: '4805' } })
-//       .populate('avatar')
-//       .select('id name username avatar tagline quacks')
-//       .sort({ createdAt: -1 })
-//       .limit(3);
-//     res.status(200).send(sort);
-//   } catch (error) {
-//     res.status(500).send({
-//       success: false,
-//       message: 'Error retrieving new user data',
-//       error,
-//     });
-//   }
-// });
+router.get('/api/new', async (req: Request, res: Response) => {
+  try {
+    const sort = await User.find({ username: { $ne: '4805' } })
+      .populate('avatar')
+      .select('id name username avatar tagline quacks')
+      .sort({ createdAt: -1 })
+      .limit(3);
+    res.status(200).send(sort);
+  } catch (error) {
+    res.status(500).send({
+      success: false,
+      message: 'Error retrieving new user data',
+      error,
+    });
+  }
+});
 
 /* Search database for users
  * @requiresAuth: false
