@@ -90,7 +90,7 @@ router.get('/api/trending', async (req: Request, res: Response) => {
   }
 });
 
-/* Get new user info
+/* Get new user info/
  * @requiresAuth: false
  */
 router.get('/api/new', async (req: Request, res: Response) => {
