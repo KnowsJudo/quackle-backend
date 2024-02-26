@@ -28,5 +28,8 @@
       "src": "/(.*)",
       "dest": "/src/index.ts"
     }
-  ]
+  ],
+  "engines": {
+    "node": "20.11.0"
+  }
 }
