@@ -9,6 +9,9 @@
     "build": "tsc",
     "start": "cross-env NODE_ENV=production ts-node-dev src/index.ts"
   },
+  "engines": {
+    "node": "20.11.0"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
