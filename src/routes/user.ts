@@ -73,22 +73,22 @@ router.get('/api/user/:username?', async (req: Request, res: Response) => {
 /* Get trending info
  * @requiresAuth: false
  */
-router.get('/api/trending', async (req: Request, res: Response) => {
-  try {
-    const sort = await User.find({ username: { $ne: '4805' } })
-      .populate('avatar')
-      .select('id name username avatar tagline quacks')
-      .sort({ quacks: -1 })
-      .limit(17);
-    res.status(200).send(sort);
-  } catch (error) {
-    res.status(500).send({
-      success: false,
-      message: 'Error retrieving trending data',
-      error,
-    });
-  }
-});
+// router.get('/api/trending', async (req: Request, res: Response) => {
+//   try {
+//     const sort = await User.find({ username: { $ne: '4805' } })
+//       .populate('avatar')
+//       .select('id name username avatar tagline quacks')
+//       .sort({ quacks: -1 })
+//       .limit(17);
+//     res.status(200).send(sort);
+//   } catch (error) {
+//     res.status(500).send({
+//       success: false,
+//       message: 'Error retrieving trending data',
+//       error,
+//     });
+//   }
+// });
 
 /* Get new user info
  * @requiresAuth: false
