@@ -35,6 +35,8 @@ app.use(userRouter);
 app.use(quackRouter);
 app.use(flockRouter);
 
+module.exports = app;
+
 try {
   // mongoose.connect('mongodb://localhost:27017/quackle');
   mongoose.connect(mongoCred as string);
